@@ -422,6 +422,18 @@ footer{min-height:280px;padding-top:44px}
 .mini-surface .footer-slogan{font-size:24px;line-height:1.12;white-space:nowrap;letter-spacing:-.065em;text-align:left}
 @media (max-width:720px){.member-mini-surface .member-header{height:calc(64px + env(safe-area-inset-top, 0px));padding:env(safe-area-inset-top, 0px) 18px 0}}
 
+/* The member dashboard must never inherit desktop min-content widths inside the
+   fixed 375px mini-program canvas. */
+.member-mini-surface .member-grid{display:grid;grid-template-columns:minmax(0,1fr)!important;width:100%;max-width:100%;min-width:0;padding:12px 16px 82px!important;overflow-x:hidden}
+.member-mini-surface .member-grid>.panel{width:100%;max-width:100%;min-width:0}
+.member-mini-surface .member-profile{display:flex;flex-direction:column;align-items:center;width:100%;min-width:0;text-align:center}
+.member-mini-surface .member-avatar{margin-left:auto;margin-right:auto}
+.member-mini-surface .member-profile>p{max-width:100%;overflow-wrap:anywhere}
+.member-mini-surface .member-stats{width:100%;min-width:0}
+.member-mini-surface .performance-panel,.member-mini-surface .member-radar-panel,.member-mini-surface .form-panel{overflow:hidden}
+.member-mini-surface .metric-bar{min-width:0;grid-template-columns:40px minmax(0,1fr) 28px 20px 25px}
+.member-mini-surface .metric-bar>div{min-width:0}
+
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
 .hero-line{display:block;position:relative;width:max-content;line-height:.92;padding:0 8px 7px 0}
