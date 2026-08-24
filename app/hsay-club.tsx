@@ -320,7 +320,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section events-section" id="events">
         <div className="section-head">
-          <div><span className="section-kicker">EVENT CALENDAR</span><h2>赛事日历</h2><p>过去的荣耀、正在进行的对阵，以及下一站安排。</p></div>
+          <div><span className="section-kicker">EVENT CALENDAR</span><h2>赛事</h2><p>过去的荣耀、正在进行的对阵，以及下一站安排。</p></div>
           <span className="season-chip">2026 赛季</span>
         </div>
         <div className="event-list">
@@ -374,7 +374,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section ranking-section" id="ranking">
         <div className="section-head inverse-head">
-          <div><span className="section-kicker">2026 SEASON RANKING</span><h2>积分与排名</h2><p>年度荣誉、单打实力与双打实力分开呈现。</p></div>
+          <div><span className="section-kicker">2026 SEASON RANKING</span><h2>排名</h2><p>年度荣誉、单打实力与双打实力分开呈现。</p></div>
           <div className="ranking-controls">
             <div className="level-filter" role="group" aria-label="选择排名类型">
               <button className={rankingMode === "annual" ? "active" : ""} onClick={() => setRankingMode("annual")}>年度积分</button>
@@ -426,7 +426,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section players-section" id="players">
         <div className="section-head roster-head">
-          <div><span className="section-kicker">HSAY PLAYER ARCHIVE</span><h2>球员档案</h2><p>按参赛量浏览 HSAY 球员。</p></div>
+          <div><span className="section-kicker">HSAY PLAYER ARCHIVE</span><h2>球员</h2><p>按参赛量浏览 HSAY 球员。</p></div>
           <label className="player-search"><span>⌕</span><input value={playerQuery} onChange={(event) => setPlayerQuery(event.target.value)} placeholder="搜索球员名字" aria-label="搜索球员名字" /></label>
         </div>
         <div className="roster-grid">
@@ -443,7 +443,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section h2h-section" id="h2h">
         <div className="section-head">
-          <div><span className="section-kicker">HEAD TO HEAD</span><h2>谁是谁的主人？</h2></div>
+          <div><span className="section-kicker">HEAD TO HEAD</span><h2>H2H</h2></div>
           <span className="public-tag">公开赛果</span>
         </div>
         <div className="h2h-board">
