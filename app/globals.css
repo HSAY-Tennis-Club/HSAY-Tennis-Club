@@ -367,5 +367,5 @@ footer{min-height:280px;padding-top:44px}
 .court-svg{position:absolute;z-index:1;inset:66px 22px 86px;width:calc(100% - 44px);height:calc(100% - 152px);fill:none;stroke:rgba(52,83,74,.28);stroke-width:2;pointer-events:none}
 .hero-score-card:after{display:none}
 .hero-score-card .finalist{z-index:3}.hero-score-card .final-score{z-index:3}.hero-score-card .trophy-ball{z-index:4}
-.slogan-strike{color:var(--coral)!important}.slogan-strike:after{height:5px;background:var(--coral);top:53%;transform:rotate(-3deg)}
+.slogan-strike{color:#fff!important}.slogan-strike:after{height:5px;background:var(--coral);top:53%;transform:rotate(-3deg)}
 @media (max-width:720px){.hero h1{align-items:center;font-size:44px}.hero-line{padding-right:4px}.hero-line-bottom:after{right:-3px;height:4px}.surface-notice{margin:7px auto}.court-svg{inset:45px 15px 60px;width:calc(100% - 30px);height:calc(100% - 105px)}}
