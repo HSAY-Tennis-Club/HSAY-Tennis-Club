@@ -222,7 +222,7 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
-      {surface === "mini" && <div className="surface-notice"><b>小程序模式</b><span>微信触控导航预览 · 排名、赛事与球员数据和 Web 同步</span></div>}
+      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>已切换为微信触控版式 · 数据与 Web 同步</span></div>}
 
       <section className="hero" id="top">
         <div className="hero-copy">
