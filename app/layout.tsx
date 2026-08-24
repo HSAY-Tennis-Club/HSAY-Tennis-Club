@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 const siteTitle = "HSAY 网球俱乐部｜Hit · Spin · Ace & You";
 const siteDescription =
-  "扎根上海的 LGBTQ+ 友好网球社群。查看比赛成绩、积分排名、H2H 与球员档案。";
+  "扎根上海的 LGBTQ+ 友好网球社群。查看赛事日历、赛程安排、完整比分、赛季排名、H2H 与球员档案。";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();

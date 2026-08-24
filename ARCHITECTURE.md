@@ -57,7 +57,7 @@ services/
 
 | 对象 | 游客可见 | 登录后按权限可见 |
 |---|---|---|
-| 球员 | 昵称、头像、NTRP、打法、排名、公开胜率 | 姓名、联系方式、训练目标、伤病/可约时间（本人或授权角色） |
+| 球员 | 昵称、头像、年度积分、单/双打排名、参赛与冠军记录、公开胜率 | 姓名、联系方式、训练目标、伤病/可约时间（本人或授权角色） |
 | 比赛 | 日期、场地、对阵、盘分、赛事阶段 | 赛后备注、视频、详细技术统计、申诉记录 |
 | H2H | 交手次数、胜负、最近赛果 | 场地/球速拆分、战术倾向、关键分与球路洞察 |
 | 指标 | 可选的公开摘要 | 六维雷达、趋势、逐场明细、教练私密备注 |
@@ -68,13 +68,13 @@ services/
 
 - `users`：账号主体、状态、最后登录时间。
 - `identities`：微信/手机号/Web 登录身份与内部用户关联。
-- `members`：会员编号、昵称、NTRP、公开简介、隐私设置。
+- `members`：会员编号、昵称、公开简介、隐私设置。
 - `roles`、`user_roles`：角色与作用域。
 - `tournaments`、`events`：赛事、组别、赛制。
 - `matches`：状态、日期、场地、赛制、胜者、录入人、确认状态。
 - `match_players`：单打/双打参赛者与队伍。
 - `match_sets`：每盘比分、抢十、退赛等结果。
-- `ratings`：每期战力分、排名、变动、算法版本。
+- `ratings`：年度积分、单打 Elo、双打 Elo、排名、变动、样本数和算法版本。
 - `performance_metrics`：球员逐场原始指标与来源。
 - `metric_snapshots`：六维指标快照、时间窗口和算法版本。
 - `coach_notes`：作者、球员、正文、可见范围。
@@ -89,7 +89,10 @@ services/
 
 ```text
 GET  /v1/public/club
-GET  /v1/public/rankings?season=&level=
+GET  /v1/public/rankings?season=&type=annual|singles|doubles
+GET  /v1/public/events?season=&status=
+GET  /v1/public/events/:id/schedule
+GET  /v1/public/events/:id/scorecard
 GET  /v1/public/matches?cursor=
 GET  /v1/public/players/:slug
 GET  /v1/public/h2h?left=&right=
@@ -107,7 +110,7 @@ POST /v1/admin/matches/:id/confirm
 
 首版推荐可解释的积分制：基础胜场分 + 对手强度加成 + 赛事轮次加成 + 近期衰减。不要一开始就做复杂黑盒算法。
 
-- 排名榜记录赛季、NTRP 分组与更新时间。
+- 排名榜按赛季和榜单类型记录，不设置等级筛选；年度积分、单打 Elo、双打 Elo 分开计算并显示更新时间。
 - H2H 只统计已确认比赛，可按场地、赛制、时间窗切片。
 - 技术指标把“原始数据”和“归一化得分”分开保存。
 - 六维雷达必须展示样本数和时间窗，避免少量比赛造成误导。

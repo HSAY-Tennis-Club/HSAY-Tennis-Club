@@ -32,9 +32,13 @@ test("server-renders the public HSAY club experience", async () => {
   const html = await response.text();
   assert.match(html, /HSAY 网球俱乐部/);
   assert.match(html, /场下是姐妹/);
-  assert.match(html, /刚刚撕完/);
-  assert.match(html, /本周战力榜/);
-  assert.match(html, /网网相对/);
+  assert.match(html, /赛事日历/);
+  assert.match(html, /冠军女性杯/);
+  assert.match(html, /完整赛果/);
+  assert.match(html, /积分与排名/);
+  assert.match(html, /川林贯空/);
+  assert.match(html, /球员档案/);
+  assert.doesNotMatch(html, /NTRP 3\.0|NTRP 3\.5|NTRP 4\.0|NTRP 4\.5/);
   assert.match(html, /会员登录/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
