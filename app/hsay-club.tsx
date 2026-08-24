@@ -144,11 +144,33 @@ const eventList = [
   { month: "AUG", day: "—", year: "2026", title: "2026 赛季下一站", meta: "日期与场地待赛事组确认", format: "报名未开启", status: "待公布", tone: "coral" },
 ];
 
+const radarMetrics = [
+  { label: "实力", value: 95 },
+  { label: "压制", value: 28 },
+  { label: "韧性", value: 17 },
+  { label: "调整力", value: 33 },
+  { label: "稳定", value: 87 },
+  { label: "样本", value: 50 },
+];
+
+function radarPolygon(values: number[]) {
+  const points = values.map((rawValue, index) => {
+    const value = Math.max(0, Math.min(100, rawValue));
+    const angle = (-90 + index * 60) * (Math.PI / 180);
+    const radius = value * 0.44;
+    const x = 50 + Math.cos(angle) * radius;
+    const y = 50 + Math.sin(angle) * radius;
+    return `${x.toFixed(2)}% ${y.toFixed(2)}%`;
+  });
+  return `polygon(${points.join(", ")})`;
+}
+
 function Avatar({ player, size = "medium" }: { player: Player; size?: "small" | "medium" | "large" }) {
   return <span className={`avatar avatar-${size} avatar-${player.color}`} aria-hidden="true">{player.initial}</span>;
 }
 
 export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; displayName?: string }) {
+  const [surface, setSurface] = useState<"web" | "mini">("web");
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
   const [eventStage, setEventStage] = useState("final");
   const [leftId, setLeftId] = useState("yufan");
@@ -176,7 +198,7 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
   };
 
   return (
-    <main>
+    <main className={surface === "mini" ? "mini-surface" : "web-surface"}>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="HSAY 首页">
           <span className="brand-mark">HSAY<i /></span>
@@ -189,6 +211,10 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
           <a href="#h2h" onClick={() => setMobileMenu(false)}>H2H</a>
         </nav>
         <div className="header-actions">
+          <div className="surface-toggle" role="group" aria-label="切换 Web 或小程序模式">
+            <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
+            <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
+          </div>
           <a className="login-button" href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>
             <span className="status-dot" />
             {isSignedIn ? `${displayName?.split("@")[0] ?? "会员"} · 会员中心` : "会员登录"}
@@ -196,11 +222,12 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
+      {surface === "mini" && <div className="surface-notice"><b>小程序模式</b><span>微信触控导航预览 · 排名、赛事与球员数据和 Web 同步</span></div>}
 
       <section className="hero" id="top">
         <div className="hero-copy">
           <div className="eyebrow"><span>SHANGHAI</span><b>·</b><span>150 PLAYERS</span><b>·</b><span>EST. 2024</span></div>
-          <h1><span>场下是姐妹，</span><span className="outline-text">场上撕得飞。</span></h1>
+          <h1><span>场下是宝贝，</span><span className="outline-text">场上撕得飞。</span></h1>
           <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />也认真接住每一次“纯属我演”。</p>
           <div className="hero-actions">
             <a className="primary-button" href="#events">查看赛事安排 <span>↗</span></a>
@@ -272,12 +299,13 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
           <div className="fixture-list">
             {selectedStage.fixtures.map((fixture, index) => (
               <div className="fixture-row" key={`${eventStage}-${index}`}>
-                <div className={fixture.winner === "left" ? "fixture-winner" : ""}><span>{fixture.type}</span><strong>{fixture.left}</strong></div>
+                <div className={fixture.winner === "left" ? "fixture-winner" : "fixture-loser"}><span>{fixture.type}</span><strong>{fixture.left}</strong></div>
                 <b>{fixture.score}</b>
-                <div className={fixture.winner === "right" ? "fixture-winner" : ""}><span>{String(index + 1).padStart(2, "0")}</span><strong>{fixture.right}</strong></div>
+                <div className={fixture.winner === "right" ? "fixture-winner" : "fixture-loser"}><span>{String(index + 1).padStart(2, "0")}</span><strong>{fixture.right}</strong></div>
               </div>
             ))}
           </div>
+          <div className="score-legend" aria-label="比分颜色说明"><span className="legend-win"><i /> WIN · 胜方</span><span className="legend-lost"><i /> LOST · 负方</span></div>
         </article>
       </section>
 
@@ -404,15 +432,16 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
       <section className="section metrics-section" id="membership">
         <div className="metric-copy">
           <span className="section-kicker">MEMBERS ONLY</span><h2>你的球，不止输赢。</h2><p>登录后解锁个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
-          <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>私密教练备注</li></ul>
+          <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>密友备注</li></ul>
           <a className="primary-button light-button" href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>{isSignedIn ? "进入我的数据舱" : "登录解锁我的数据"} <span>→</span></a>
           <small>会员数据仅本人及获授权的俱乐部管理员可见</small>
         </div>
         <div className="metric-preview" aria-label="会员技术数据预览">
           <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>LOKER’S PROFILE</b><small>稳定画像 · 50 场样本</small></span></div><span className="lock-pill">🔒 私密</span></div>
           <div className="radar-wrap">
-            <div className="radar-label label-serve">实力 <b>95</b></div><div className="radar-label label-return">压制 <b>28</b></div><div className="radar-label label-forehand">韧性 <b>17</b></div><div className="radar-label label-backhand">调整力 <b>33</b></div><div className="radar-label label-net">稳定 <b>87</b></div><div className="radar-label label-mental">样本 <b>50</b></div>
-            <div className="radar-grid"><i /><i /><i /><span /></div>
+            <div className="radar-label label-serve">{radarMetrics[0].label} <b>{radarMetrics[0].value}</b></div><div className="radar-label label-return">{radarMetrics[1].label} <b>{radarMetrics[1].value}</b></div><div className="radar-label label-forehand">{radarMetrics[2].label} <b>{radarMetrics[2].value}</b></div><div className="radar-label label-backhand">{radarMetrics[3].label} <b>{radarMetrics[3].value}</b></div><div className="radar-label label-net">{radarMetrics[4].label} <b>{radarMetrics[4].value}</b></div><div className="radar-label label-mental">{radarMetrics[5].label} <b>{radarMetrics[5].value}</b></div>
+            <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(radarMetrics.map((metric) => metric.value)) }} /></div>
+            <small className="radar-status">当前为数值渲染示例 · 六个维度的定义与权重待讨论</small>
           </div>
           <div className="trend-row"><div><span>年度积分</span><strong>12,736</strong></div><div><span>历史最佳</span><strong>#1</strong></div><div><span>比赛画像</span><strong className="glow-text">稳定得很礼貌</strong></div></div>
         </div>
@@ -429,12 +458,12 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
       </section>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark footer-mark">HSAY<i /></span><p>Hit · Spin · Ace & You<br />上海 · LGBTQ+ Friendly Tennis Club</p></div>
+        <div className="footer-brand"><span className="brand-mark footer-mark">HSAY<i /></span><p>Hit · Spin · Ace & You</p></div>
         <div className="footer-slogan">撕烂全场，我来闪耀。<br /><em>今天演了，下次横扫。</em></div>
         <div className="footer-meta"><span>© 2026 HSAY TENNIS CLUB</span><span>MADE WITH PRIDE IN SHANGHAI</span></div>
       </footer>
 
-      <nav className="mobile-bottom-nav" aria-label="移动端导航">
+      <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
         <a href="#top">⌂<span>首页</span></a><a href="#events">▦<span>赛事</span></a><a href="#ranking">↗<span>排名</span></a><a href="#players">●<span>球员</span></a><a href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>◎<span>我的</span></a>
       </nav>
     </main>

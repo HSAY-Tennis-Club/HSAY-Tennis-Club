@@ -31,13 +31,18 @@ test("server-renders the public HSAY club experience", async () => {
 
   const html = await response.text();
   assert.match(html, /HSAY 网球俱乐部/);
-  assert.match(html, /场下是姐妹/);
+  assert.match(html, /场下是宝贝/);
+  assert.match(html, /切换 Web 或小程序模式/);
   assert.match(html, /赛事日历/);
   assert.match(html, /冠军女性杯/);
   assert.match(html, /完整赛果/);
+  assert.match(html, /WIN · 胜方/);
+  assert.match(html, /LOST · 负方/);
   assert.match(html, /积分与排名/);
   assert.match(html, /川林贯空/);
   assert.match(html, /球员档案/);
+  assert.match(html, /密友备注/);
+  assert.doesNotMatch(html, /上海 · LGBTQ\+ Friendly Tennis Club/);
   assert.doesNotMatch(html, /NTRP 3\.0|NTRP 3\.5|NTRP 4\.0|NTRP 4\.5/);
   assert.match(html, /会员登录/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);

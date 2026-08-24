@@ -34,8 +34,8 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
           </div>
         </article>
         <article className="panel form-panel"><span className="section-kicker">FORM CURVE</span><h2>近期状态</h2><div className="form-chart"><i style={{height:"38%"}}/><i style={{height:"55%"}}/><i style={{height:"48%"}}/><i style={{height:"70%"}}/><i style={{height:"62%"}}/><i style={{height:"86%"}}/><i style={{height:"74%"}}/><i className="current" style={{height:"92%"}}/></div><div className="chart-axis"><span>JUN</span><span>JUL</span><span>AUG</span></div></article>
-        <article className="panel coach-note"><span className="section-kicker">COACH NOTE · 08.21</span><h2>下一场，别急着闪耀。</h2><p>二发被攻后的第一拍容易过早变线。下一次训练先用 70% 力量打深中路，把回合拉到第四拍再启动正手。你已经够快了，现在要学会让对手先着急。</p><div><span>本周重点</span><b>二发 + 1</b><b>反手深度</b><b>关键分耐心</b></div></article>
-        <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人、主教练；训练备注：仅本人、撰写教练；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
+        <article className="panel coach-note"><span className="section-kicker">CLOSE FRIEND NOTE · 08.21</span><h2>下一场，别急着闪耀。</h2><p>二发被攻后的第一拍容易过早变线。下一次训练先用 70% 力量打深中路，把回合拉到第四拍再启动正手。你已经够快了，现在要学会让对手先着急。</p><div><span>密友备注</span><b>二发 + 1</b><b>反手深度</b><b>关键分耐心</b></div></article>
+        <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人及获授权成员；密友备注：仅本人和被授权查看的密友；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
       </section>
     </main>
   );

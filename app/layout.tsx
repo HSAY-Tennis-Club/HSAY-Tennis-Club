@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: siteDescription,
       type: "website",
       locale: "zh_CN",
-      images: [{ url: socialImage, width: 1734, height: 907, alt: "HSAY 网球俱乐部 — 场下是姐妹，场上撕得飞。" }],
+      images: [{ url: socialImage, width: 1734, height: 907, alt: "HSAY 网球俱乐部 — 场下是宝贝，场上撕得飞。" }],
     },
     twitter: {
       card: "summary_large_image",
