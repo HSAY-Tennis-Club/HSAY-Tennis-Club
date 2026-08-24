@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Player = {
   id: string;
@@ -139,9 +139,23 @@ const eventStages: Record<string, { title: string; left: string; right: string; 
 };
 
 const eventList = [
-  { month: "AUG", day: "12", year: "2025", title: "HSAY冠军女性杯团体赛", meta: "OT网球俱乐部 · 宝山", format: "4 队 · 36 场", status: "已结束", tone: "lime" },
-  { month: "JUL", day: "21", year: "2026", title: "2026 双打赛季站", meta: "俱乐部登记赛 · 双打", format: "赛果已入库", status: "已结束", tone: "violet" },
-  { month: "AUG", day: "—", year: "2026", title: "2026 赛季下一站", meta: "日期与场地待赛事组确认", format: "报名未开启", status: "待公布", tone: "coral" },
+  { id: "event-0812", month: "AUG", day: "12", year: "2026", title: "HSAY冠军女性杯团体赛", meta: "OT网球俱乐部 · 宝山大白气模馆", format: "4 队 · 完整赛果", status: "已结束", tone: "lime" },
+  { id: "event-0818", month: "AUG", day: "18", year: "2026", title: "HSAY星桥鸳鸯杯团体赛", meta: "OT网球俱乐部 · 宝山大白气模馆", format: "4 队 · 编排已录入", status: "已结束", tone: "violet" },
+  { id: "event-0825", month: "AUG", day: "25", year: "2026", title: "HSAY伏风蟹鸣杯大白单打赛", meta: "OT网球俱乐部 · 宝山大白气模馆", format: "8 组 · 小组赛", status: "赛程已定", tone: "coral" },
+];
+
+const event0818Teams = [
+  { name: "校长带学员团", tone: "pink", players: ["Stone", "William", "Michael", "Peter", "晓阳", "刀刀"], doubles: ["William / Michael", "刀刀 / Peter", "晓阳 / Stone"] },
+  { name: "牛转乾坤", tone: "blue", players: ["子承", "Loker", "小沙", "Jay", "Kerber", "Ivan"], doubles: ["Kerber / 小沙", "Loker / Jay", "Ivan / 子承"] },
+  { name: "牛来", tone: "ink", players: ["1999", "LL", "呆呆", "Alex", "Adam", "Ethan"], doubles: ["Adam / LL", "Ethan / 呆呆", "Alex / 1999"] },
+  { name: "兔女郎们的狂欢日", tone: "paper", players: ["Andrew", "宇凡", "鱼渔", "程泽", "龙忻", "傅医生"], doubles: ["宇凡 / 龙忻", "Andrew / 程泽", "鱼渔 / 傅医生"] },
+];
+
+const event0825Groups = [
+  ["A", "[1] 川林贯空", "夏和雪", "Josh"], ["B", "[6] 虎", "傅医生", "阳阳"],
+  ["C", "[7] Adam", "刀刀", "Casper"], ["D", "[4] 沙漠", "LL", "Jacky"],
+  ["E", "[3] Connor", "Sven", "Lay"], ["F", "[5] Loker", "Ethan", "许伟洪"],
+  ["G", "[8] Andrew", "Max", "铭"], ["H", "[2] 宇凡", "东山", "Kerber"],
 ];
 
 const radarMetrics = [
@@ -173,11 +187,16 @@ export function HSAYClub() {
   const [surface, setSurface] = useState<"web" | "mini">("web");
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
   const [eventStage, setEventStage] = useState("final");
+  const [activeEventId, setActiveEventId] = useState("event-0812");
   const [leftId, setLeftId] = useState("yufan");
   const [rightId, setRightId] = useState("sven");
   const [playerQuery, setPlayerQuery] = useState("");
   const [showAllPlayers, setShowAllPlayers] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("surface") === "mini") setSurface("mini");
+  }, []);
 
   const left = players.find((player) => player.id === leftId) ?? players[1];
   const right = players.find((player) => player.id === rightId) ?? players[21];
@@ -185,6 +204,7 @@ export function HSAYClub() {
   const leftWins = isReferenceH2H ? (left.id === "yufan" ? 6 : 0) : 0;
   const rightWins = isReferenceH2H ? (right.id === "sven" ? 0 : 6) : 0;
   const selectedStage = eventStages[eventStage];
+  const activeEvent = eventList.find((event) => event.id === activeEventId) ?? eventList[0];
 
   const roster = useMemo(() => {
     const query = playerQuery.trim().toLowerCase();
@@ -214,19 +234,19 @@ export function HSAYClub() {
             <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
             <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
           </div>
-          <a className="login-button" href="/member">
+          <a className="login-button" href={surface === "mini" ? "/member?surface=mini" : "/member"}>
             <span className="status-dot" />
             我的数据
           </a>
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
-      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>375px 固定画布 · 上下滑动单屏翻页</span></div>}
+      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b></div>}
 
       <section className="hero" id="top">
         <div className="hero-copy">
           <div className="eyebrow"><span>SHANGHAI</span><b>·</b><span>150 PLAYERS</span><b>·</b><span>EST. 2024</span></div>
-          <h1><span>场下是宝贝，</span><span className="outline-text">场上撕得飞。</span></h1>
+          <h1><span className="hero-line hero-line-top">场下宝贝，</span><span className="hero-line hero-line-bottom">场上撕飞。</span></h1>
           <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />也认真接住每一次“纯属我演”。</p>
           <div className="hero-actions">
             <a className="primary-button" href="#events">查看赛事安排 <span>↗</span></a>
@@ -238,15 +258,24 @@ export function HSAYClub() {
           <div className="rainbow-orbit orbit-one" />
           <div className="rainbow-orbit orbit-two" />
           <article className="hero-score-card">
-            <div className="score-card-top"><span className="live-pill"><i /> TEAM FINAL</span><span>2025.08.12</span></div>
+            <div className="score-card-top"><span className="live-pill"><i /> TEAM FINAL</span><span>2026.08.12</span></div>
             <div className="trophy-ball">ACE</div>
+            <svg className="court-svg" viewBox="0 0 600 360" aria-hidden="true">
+              <rect x="22" y="22" width="556" height="316" rx="2" />
+              <line x1="300" y1="22" x2="300" y2="338" />
+              <line x1="22" y1="180" x2="578" y2="180" />
+              <line x1="92" y1="22" x2="92" y2="338" />
+              <line x1="508" y1="22" x2="508" y2="338" />
+              <line x1="92" y1="116" x2="508" y2="116" />
+              <line x1="92" y1="244" x2="508" y2="244" />
+            </svg>
             <div className="finalist finalist-left">
               <span className="avatar avatar-large avatar-blue">永</span>
-              <strong>永瘦宫</strong><span>2</span>
+              <strong>永瘦宫</strong>
             </div>
             <div className="finalist finalist-right">
               <span className="avatar avatar-large avatar-lime">D</span>
-              <strong>D-I-Y</strong><span>1</span>
+              <strong>D-I-Y</strong>
             </div>
             <div className="final-score"><small>FINAL</small><b>3</b><b>—</b><b className="tie-score">6</b></div>
             <div className="card-slogan">冠军女性杯，<em>D-I-Y 登顶。</em></div>
@@ -269,11 +298,11 @@ export function HSAYClub() {
         </div>
         <div className="event-list">
           {eventList.map((event) => (
-            <article className="event-card" key={`${event.year}-${event.title}`}>
+            <article className="event-card" key={event.id}>
               <div className={`event-date event-date-${event.tone}`}><span>{event.month}</span><b>{event.day}</b><small>{event.year}</small></div>
               <div className="event-main"><span>{event.status}</span><h3>{event.title}</h3><p>{event.meta}</p></div>
               <div className="event-format"><span>赛事安排</span><b>{event.format}</b></div>
-              <a href={event.title.includes("冠军女性杯") ? "#event-detail" : "#events"} aria-label={`查看${event.title}`}>→</a>
+              <a href="#event-detail" onClick={() => setActiveEventId(event.id)} aria-label={`查看${event.title}`}>→</a>
             </article>
           ))}
         </div>
@@ -281,50 +310,40 @@ export function HSAYClub() {
 
       <section className="section event-detail-section" id="event-detail">
         <div className="event-detail-intro">
-          <span className="section-kicker">FULL EVENT SCORECARD</span>
-          <h2>冠军女性杯<br />完整赛果</h2>
-          <p>2025.08.12 · OT网球俱乐部<br />宝山大白气模馆 · 团体赛</p>
-          <div className="stage-tabs" role="group" aria-label="选择赛事阶段">
+          <span className="section-kicker">EVENT ARRANGEMENT</span>
+          <h2>{activeEvent.id === "event-0812" ? <>冠军女性杯<br />完整赛果</> : activeEvent.title.replace("HSAY", "")}</h2>
+          <p>{activeEvent.year}.08.{activeEvent.day} · OT网球俱乐部<br />宝山大白气模馆 · {activeEvent.id === "event-0825" ? "小组单打" : "团体赛"}</p>
+          {activeEvent.id === "event-0812" && <div className="stage-tabs" role="group" aria-label="选择赛事阶段">
             {Object.entries(eventStages).map(([key, stage]) => <button key={key} className={eventStage === key ? "active" : ""} onClick={() => setEventStage(key)}>{stage.title}</button>)}
-          </div>
+          </div>}
         </div>
-        <article className="scorecard">
+        {activeEvent.id === "event-0812" && <article className="scorecard">
           <div className="scorecard-head">
             <span>{selectedStage.title}</span>
             <div><strong>{selectedStage.left}</strong><b>{selectedStage.teamScore}</b><strong>{selectedStage.right}</strong></div>
             <small>{selectedStage.fixtures.length} 场对阵 · 先到 15 分</small>
           </div>
-          <div className="fixture-head"><span>左方</span><span>比分</span><span>右方</span></div>
           <div className="fixture-list">
             {selectedStage.fixtures.map((fixture, index) => (
               <div className="fixture-row" key={`${eventStage}-${index}`}>
-                <div className={fixture.winner === "left" ? "fixture-winner" : "fixture-loser"}><span>{fixture.type}</span><strong>{fixture.left}</strong></div>
+                <div className={fixture.winner === "left" ? "fixture-winner" : "fixture-loser"}><strong>{fixture.left}</strong></div>
                 <b>{fixture.score}</b>
-                <div className={fixture.winner === "right" ? "fixture-winner" : "fixture-loser"}><span>{String(index + 1).padStart(2, "0")}</span><strong>{fixture.right}</strong></div>
+                <div className={fixture.winner === "right" ? "fixture-winner" : "fixture-loser"}><strong>{fixture.right}</strong></div>
               </div>
             ))}
           </div>
-          <div className="score-legend" aria-label="比分颜色说明"><span className="legend-win"><i /> WIN · 胜方</span><span className="legend-lost"><i /> LOST · 负方</span></div>
-        </article>
-      </section>
-
-      <section className="section results-section" id="scores">
-        <div className="section-head">
-          <div><span className="section-kicker">LATEST REGISTERED RESULTS</span><h2>最近赛果</h2></div>
-          <a href="#event-detail">查看完整记分卡 <span>→</span></a>
-        </div>
-        <div className="match-list">
-          {recentResults.map((match, index) => (
-            <article className="match-row" key={`${match.winner}-${match.loser}`}>
-              <div className={`round-badge round-${match.tone}`}>{match.round}</div>
-              <div className="match-number">0{index + 1}</div>
-              <div className="match-player winner"><strong>{match.winner}</strong><span>WINNER</span></div>
-              <div className="match-score"><b>{match.score}</b></div>
-              <div className="match-player loser"><strong>{match.loser}</strong><span>FINAL</span></div>
-              <div className="match-meta"><b>{match.time}</b><span>{match.court}</span></div>
-            </article>
-          ))}
-        </div>
+          <p className="scorecard-note">比分按赛事登记顺序展示，颜色仅用于区分双方。</p>
+        </article>}
+        {activeEvent.id === "event-0818" && <article className="arrangement-card">
+          <div className="arrangement-heading"><b>半决赛对阵</b><span>4 队 · 每队 6 位球员</span></div>
+          <div className="team-grid">{event0818Teams.map((team) => <div className={`team-card team-${team.tone}`} key={team.name}><h3>{team.name}</h3><div className="team-players">{team.players.map((player) => <span key={player}>{player}</span>)}</div><div className="team-doubles"><small>双打组合</small>{team.doubles.map((pair) => <b key={pair}>{pair}</b>)}</div></div>)}</div>
+          <div className="bracket-placeholder"><b>三四名决赛</b><span>待录入</span><i>决赛 · 待录入</i></div>
+        </article>}
+        {activeEvent.id === "event-0825" && <article className="arrangement-card">
+          <div className="arrangement-heading"><b>小组赛 · 抢 11 金球</b><span>8 组 · 每组 3 人</span></div>
+          <div className="group-grid">{event0825Groups.map(([group, first, second, third]) => <div className="group-card" key={group}><h3>{group}组</h3><div><span>{first}</span><span>{second}</span><span>{third}</span></div></div>)}</div>
+          <div className="bracket-placeholder"><b>金组 / 银组 / 铜组淘汰赛</b><span>小组赛结束后录入</span></div>
+        </article>}
       </section>
 
       <section className="section ranking-section" id="ranking">
@@ -432,17 +451,12 @@ export function HSAYClub() {
         <div className="metric-copy">
           <span className="section-kicker">MEMBER DATA</span><h2>你的球，不止输赢。</h2><p>会员数据舱展示个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
           <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>密友备注</li></ul>
-          <a className="primary-button light-button" href="/member">进入我的数据舱 <span>→</span></a>
+          <a className="primary-button light-button" href={surface === "mini" ? "/member?surface=mini" : "/member"}>进入我的数据舱 <span>→</span></a>
           <small>会员数据仅本人及获授权的俱乐部管理员可见</small>
         </div>
-        <div className="metric-preview" aria-label="会员技术数据预览">
-          <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>LOKER’S PROFILE</b><small>稳定画像 · 50 场样本</small></span></div><span className="lock-pill">🔒 私密</span></div>
-          <div className="radar-wrap">
-            <div className="radar-label label-serve">{radarMetrics[0].label} <b>{radarMetrics[0].value}</b></div><div className="radar-label label-return">{radarMetrics[1].label} <b>{radarMetrics[1].value}</b></div><div className="radar-label label-forehand">{radarMetrics[2].label} <b>{radarMetrics[2].value}</b></div><div className="radar-label label-backhand">{radarMetrics[3].label} <b>{radarMetrics[3].value}</b></div><div className="radar-label label-net">{radarMetrics[4].label} <b>{radarMetrics[4].value}</b></div><div className="radar-label label-mental">{radarMetrics[5].label} <b>{radarMetrics[5].value}</b></div>
-            <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(radarMetrics.map((metric) => metric.value)) }} /></div>
-            <small className="radar-status">当前为数值渲染示例 · 六个维度的定义与权重待讨论</small>
-          </div>
-          <div className="trend-row"><div><span>年度积分</span><strong>12,736</strong></div><div><span>历史最佳</span><strong>#1</strong></div><div><span>比赛画像</span><strong className="glow-text">稳定得很礼貌</strong></div></div>
+        <div className="metric-preview metric-lock-preview" aria-label="会员技术数据预览">
+          <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>PRIVATE PROFILE</b><small>登录后查看个人比赛画像</small></span></div><span className="lock-pill">🔒 仅自己可见</span></div>
+          <div className="metric-lock-copy"><b>六维比赛画像已移入“我的”</b><p>进入我的数据舱，查看按实际数值渲染的雷达图、近期状态和密友备注。</p><a href={surface === "mini" ? "/member?surface=mini" : "/member"}>打开我的数据舱 →</a></div>
         </div>
       </section>
 
@@ -458,12 +472,12 @@ export function HSAYClub() {
 
       <footer>
         <div className="footer-brand"><span className="brand-mark footer-mark">HSAY<i /></span><p>Hit · Spin · Ace & You</p></div>
-        <div className="footer-slogan">撕烂全场，我来闪耀。<br /><em><span className="slogan-strike">今天演了</span>，<strong>下次横扫。</strong></em></div>
+        <div className="footer-slogan"><span className="footer-ace-line">撕烂全场，我来闪耀。</span><br /><em><span className="slogan-strike">今天演了，下次横扫。</span></em></div>
         <div className="footer-meta"><span>© 2026 HSAY TENNIS CLUB</span><span>MADE WITH PRIDE IN SHANGHAI</span></div>
       </footer>
 
       <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
-        <a href="#top">⌂<span>首页</span></a><a href="#events">▦<span>赛事</span></a><a href="#ranking">↗<span>排名</span></a><a href="#players">●<span>球员</span></a><a href="/member">◎<span>我的</span></a>
+        <a href={surface === "mini" ? "/?surface=mini#top" : "#top"}>⌂<span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "#events"}>▦<span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "#ranking"}>↗<span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "#players"}>●<span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}>◎<span>我的</span></a>
       </nav>
     </main>
   );

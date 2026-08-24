@@ -36,8 +36,10 @@ test("server-renders the public HSAY club experience", async () => {
   assert.match(html, /赛事日历/);
   assert.match(html, /冠军女性杯/);
   assert.match(html, /完整赛果/);
-  assert.match(html, /WIN · 胜方/);
-  assert.match(html, /LOST · 负方/);
+  assert.doesNotMatch(html, /WIN · 胜方|LOST · 负方/);
+  assert.doesNotMatch(html, /最近赛果/);
+  assert.match(html, /scorecard-note/);
+  assert.match(html, /2026.*08.*12/);
   assert.match(html, /积分与排名/);
   assert.match(html, /川林贯空/);
   assert.match(html, /球员档案/);
@@ -65,5 +67,6 @@ test("renders the member preview without third-party authentication", async () =
   assert.match(html, /近期状态/);
   assert.match(html, /退出预览/);
   assert.match(html, /切换 Web 或小程序模式/);
+  assert.match(html, /六维比赛画像/);
   assert.doesNotMatch(html, /auth\.openai\.com|signin-with|signout-with/i);
 });
