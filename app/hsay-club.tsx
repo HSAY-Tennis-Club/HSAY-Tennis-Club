@@ -61,6 +61,15 @@ const doublesRanking = [
   { name: "Peter", initial: "P", score: 1555, samples: 17, movement: "—" },
 ];
 
+const singlesRanking = [
+  { name: "川林贯空", initial: "川", score: 1712, samples: 20, movement: "—" },
+  { name: "宇凡", initial: "宇", score: 1684, samples: 20, movement: "+1" },
+  { name: "Loker", initial: "L", score: 1659, samples: 20, movement: "-1" },
+  { name: "Peter", initial: "P", score: 1638, samples: 20, movement: "—" },
+  { name: "刀刀", initial: "刀", score: 1604, samples: 20, movement: "+2" },
+  { name: "Connor", initial: "C", score: 1588, samples: 20, movement: "-1" },
+];
+
 const recentResults = [
   { round: "决赛", winner: "D-I-Y", loser: "永瘦宫", score: "6–3", time: "2025.08.12", court: "冠军女性杯·团体", tone: "hot" },
   { round: "单打", winner: "Loker", loser: "Danwen", score: "15–0", time: "2025.08.12", court: "决赛第 1 场", tone: "cool" },
@@ -188,7 +197,7 @@ function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "
     home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z",
     calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2",
     rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z",
-    players: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
+    players: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM6 8c4 1 8 1 12 0M6 16c4-1 8-1 12 0",
     profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0",
   } as const;
   return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
@@ -201,10 +210,12 @@ function TennisCourtIcon() {
 export function HSAYClub() {
   const [surface, setSurface] = useState<"web" | "mini">("web");
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
+  const [eloWindow, setEloWindow] = useState<20 | 50>(20);
   const [eventStage, setEventStage] = useState("final");
   const [activeEventId, setActiveEventId] = useState("event-0812");
   const [leftId, setLeftId] = useState("yufan");
   const [rightId, setRightId] = useState("sven");
+  const [rightIds, setRightIds] = useState<string[]>(["sven"]);
   const [playerQuery, setPlayerQuery] = useState("");
   const [showAllPlayers, setShowAllPlayers] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -315,8 +326,8 @@ export function HSAYClub() {
         <div className="event-list">
           {eventList.map((event) => (
             <article className="event-card" key={event.id}>
-              <div className={`event-date event-date-${event.tone}`}><TennisCourtIcon /><span>{event.month}</span><b>{event.day}</b><small>{event.year}</small></div>
-              <div className="event-main"><span>{event.status}</span><h3>{event.title}</h3><p>{event.meta}</p></div>
+              <div className={`event-date event-date-${event.tone}`}><span>{event.month}</span><b>{event.day}</b><small>{event.year}</small></div>
+              <div className="event-main"><div className="event-status-line"><TennisCourtIcon /><span>{event.status}</span></div><h3>{event.title}</h3><p>{event.meta}</p></div>
               <div className="event-format"><span>赛事安排</span><b>{event.format}</b></div>
               <a href="#event-detail" onClick={() => setActiveEventId(event.id)} aria-label={`查看${event.title}`}>→</a>
             </article>
@@ -397,31 +408,26 @@ export function HSAYClub() {
           </div>
         )}
 
-        {rankingMode === "doubles" && (
+        {rankingMode !== "annual" && (
           <div className="ranking-table-wrap">
-            <div className="ranking-note"><b>双打实力榜 · Elo Beta</b><span>仅使用 2026 赛季已登记的逐场赛果估算，并显示样本场次</span></div>
+            <div className="ranking-note"><b>{rankingMode === "doubles" ? "双打实力榜" : "单打实力榜"} · Elo</b><span>按最近 {eloWindow} 场已登记赛果计算</span><div className="elo-window-toggle" role="group" aria-label="选择 Elo 样本范围"><button className={eloWindow === 20 ? "active" : ""} onClick={() => setEloWindow(20)}>近期 20 场</button><button className={eloWindow === 50 ? "active" : ""} onClick={() => setEloWindow(50)}>近期 50 场</button></div></div>
             <div className="ranking-table-head"><span>排名 / 球员</span><span>Elo</span><span>样本场次</span><span>变化</span></div>
-            {doublesRanking.map((player, index) => (
+            {(rankingMode === "doubles" ? doublesRanking : singlesRanking).map((player, index) => (
               <article className="ranking-row" key={player.name}>
                 <div className="rank-player"><span className={`rank-number rank-${index + 1}`}>{String(index + 1).padStart(2, "0")}</span><span className="avatar avatar-medium avatar-lime">{player.initial}</span><div><strong>{player.name}</strong><span>稳定样本</span></div></div>
                 <div className="points"><strong>{player.score}</strong><span>ELO</span></div>
-                <div className="stops"><strong>{player.samples}</strong><span>场双打</span></div>
+                <div className="stops"><strong>{player.samples}</strong><span>场{rankingMode === "doubles" ? "双打" : "单打"}</span></div>
                 <div className={`movement ${player.movement.startsWith("+") ? "up" : player.movement.startsWith("-") ? "down" : "flat"}`}>{player.movement}</div>
               </article>
             ))}
           </div>
         )}
 
-        {rankingMode === "singles" && (
-          <div className="ranking-pending">
-            <span>DATA IMPORT IN PROGRESS</span><b>单打实力榜正在回算</b><p>需要将历史逐场单打赛果导入后再计算 Elo；这里不使用年度积分或虚构数据替代。</p>
-          </div>
-        )}
       </section>
 
       <section className="section players-section" id="players">
         <div className="section-head roster-head">
-          <div><span className="section-kicker">HSAY PLAYER ARCHIVE</span><h2>球员档案</h2><p>已将参考清单中的真实球员替换原演示人物。</p></div>
+          <div><span className="section-kicker">HSAY PLAYER ARCHIVE</span><h2>球员档案</h2><p>按参赛量浏览 HSAY 球员。</p></div>
           <label className="player-search"><span>⌕</span><input value={playerQuery} onChange={(event) => setPlayerQuery(event.target.value)} placeholder="搜索球员名字" aria-label="搜索球员名字" /></label>
         </div>
         <div className="roster-grid">
@@ -451,7 +457,8 @@ export function HSAYClub() {
           <div className="versus-mark">VS</div>
           <div className="h2h-player right-player">
             <label>右方 · 1 人</label>
-            <select value={rightId} onChange={(event) => setRightId(event.target.value)} aria-label="选择右方球员">{players.filter((player) => player.id !== leftId).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
+            <select value={rightId} onChange={(event) => { setRightId(event.target.value); setRightIds((current) => current.includes(event.target.value) ? current : [event.target.value, ...current].slice(0, 4)); }} aria-label="选择右方球员">{players.filter((player) => player.id !== leftId).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
+            <div className="h2h-multi-picker" aria-label="追加右方球员"><small>右方可多选</small>{players.filter((player) => player.id !== leftId).slice(0, 8).map((player) => <button key={player.id} className={rightIds.includes(player.id) ? "active" : ""} onClick={() => setRightIds((current) => current.includes(player.id) ? (current.length > 1 ? current.filter((id) => id !== player.id) : current) : current.length < 4 ? [...current, player.id] : current)}>{player.name}</button>)}</div>
             <Avatar player={right} size="large" /><h3>{right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
           </div>
           <div className="h2h-summary">

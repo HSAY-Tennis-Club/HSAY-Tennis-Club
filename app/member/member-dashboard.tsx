@@ -52,13 +52,13 @@ function radarPolygon(values: number[]) {
 }
 
 function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" }) {
-  const paths = { home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z", calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2", rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z", players: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0", profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0" } as const;
+  const paths = { home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z", calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2", rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z", players: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM6 8c4 1 8 1 12 0M6 16c4-1 8-1 12 0", profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0" } as const;
   return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
 }
 
-export function MemberDashboard({ displayName }: { displayName: string }) {
+export function MemberDashboard({ displayName, initialSurface = "web" }: { displayName: string; initialSurface?: "web" | "mini" }) {
   const name = displayName.split("@")[0];
-  const [surface, setSurface] = useState<"web" | "mini">("web");
+  const [surface, setSurface] = useState<"web" | "mini">(initialSurface);
   const [metricMode, setMetricMode] = useState<"self" | "peer">("self");
   const [formWindow, setFormWindow] = useState<10 | 20>(10);
   const [besties, setBesties] = useState<string[]>(["宇凡", "CY"]);
@@ -70,7 +70,7 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
   const formWins = visibleMatches.filter((match) => match.result === "W").length;
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("surface") === "mini") setSurface("mini");
+    if (new URLSearchParams(window.location.search).get("surface") !== "mini" && window.matchMedia("(max-width: 720px), (orientation: portrait) and (max-width: 1024px)").matches) setSurface("mini");
   }, []);
 
   return (
@@ -134,7 +134,7 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
         <article className="panel ntrp-panel">
           <div className="panel-title"><div><span className="section-kicker">PLAYER SELF-ASSESSMENT</span><h2>NTRP 自评</h2></div><span className="private-chip">仅自己可见</span></div>
           <p>用一个当前最接近你的级别记录状态，不用于俱乐部排名。</p>
-          <div className="ntrp-options" role="group" aria-label="选择 NTRP 级别">{["3.0", "3.5", "4.0", "4.5"].map((level) => <button key={level} className={ntrp === level ? "active" : ""} onClick={() => setNtrp(level)}>{level}</button>)}</div>
+          <div className="ntrp-options" role="group" aria-label="选择 NTRP 级别">{["<3.0", "3.0", "3.5", "4.0", "4.5", ">4.5"].map((level) => <button key={level} className={ntrp === level ? "active" : ""} onClick={() => setNtrp(level)}>{level}</button>)}</div>
           <small>当前自评：<b>NTRP {ntrp}</b> · 仅用于个人画像</small>
         </article>
         <article className="panel relationship-panel">
