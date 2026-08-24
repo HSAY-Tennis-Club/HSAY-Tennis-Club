@@ -360,7 +360,7 @@ footer{min-height:280px;padding-top:44px}
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
 .hero-line{display:block;position:relative;width:max-content;line-height:.92;padding:0 8px 7px 0}
 .hero-line-top{color:var(--ink)}
-.hero-line-bottom{color:#d7ff38;text-shadow:4px 4px 0 rgba(20,20,20,.12)}
+.hero-line-bottom{color:var(--lime);text-shadow:none}
 .hero-line-bottom:after{display:none}
 .surface-notice{width:max-content;min-height:0!important;margin:9px auto;padding:8px 16px!important;border:1px solid rgba(215,255,56,.72);border-radius:999px;background:rgba(20,20,20,.9)!important;color:var(--lime);box-shadow:0 5px 0 rgba(20,20,20,.18);font:800 9px/1 var(--font-geist-mono);letter-spacing:.08em}
 .surface-notice b{font:inherit}.surface-notice span{display:none!important}
