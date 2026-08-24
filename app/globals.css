@@ -270,3 +270,71 @@ footer{min-height:320px;padding-top:54px}
   .member-header-actions{gap:7px}
   .member-header-actions .surface-toggle button{padding:6px 7px;font-size:7px}
 }
+
+/* Lightweight court visual: pale court lines and airy rainbow arcs replace the heavy card. */
+.rainbow-orbit{display:block;width:108%;height:76%;border-width:4px;opacity:.25;background:linear-gradient(var(--paper),var(--paper)) padding-box,conic-gradient(from 30deg,#ffb8aa,#ffd99c,#dfff91,#b9efd9,#b9d9ff,#d5c5ff,#ffb8aa) border-box}
+.orbit-two{width:88%;height:88%;border-width:2px;opacity:.16}
+.hero-score-card{background:rgba(250,252,244,.92);color:var(--ink);border:1px solid rgba(20,20,20,.28);box-shadow:14px 16px 0 rgba(130,99,255,.13);backdrop-filter:blur(2px)}
+.hero-score-card:before{left:26px;top:66px;width:5px;height:188px;border-radius:0;background:linear-gradient(180deg,#ff9d8f 0 20%,#ffd18a 20% 40%,#d9f275 40% 60%,#a8e6d0 60% 80%,#b9a9ee 80%);opacity:.72}
+.hero-score-card:after{inset:66px 22px 86px;width:auto;height:auto;border:1px solid rgba(52,83,74,.28);border-radius:0;box-shadow:none;background:linear-gradient(90deg,transparent 49.7%,rgba(52,83,74,.22) 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.5%,rgba(52,83,74,.18) 50%,transparent 50.5%),linear-gradient(0deg,transparent 66%,rgba(52,83,74,.14) 66.5%,transparent 67%)}
+.score-card-top{color:#41544c}.live-pill{color:#21806c}.live-pill i{background:#7abf75;box-shadow:0 0 8px rgba(122,191,117,.5)}
+.trophy-ball{background:var(--lime);color:var(--ink);box-shadow:0 5px 16px rgba(145,181,58,.2)}
+.hero-score-card .avatar{box-shadow:4px 4px 0 rgba(36,65,57,.22)}
+.finalist>span:last-child{color:#52645b;border-color:rgba(52,83,74,.28)}
+.final-score{border-color:rgba(52,83,74,.28)}.final-score small{color:#607169}.final-score .tie-score{color:#62a83e}
+.card-slogan{color:var(--ink)}.card-slogan em{color:#4e9b59}
+.outline-text{color:var(--ink);-webkit-text-stroke:0;text-shadow:none}
+.footer-slogan em{color:#d7ff38}.footer-slogan em strong{font-style:normal;color:var(--lime)}
+.slogan-strike{position:relative;display:inline-block;color:#aaa}
+.slogan-strike:after{content:"";position:absolute;left:-3px;right:-3px;top:52%;height:4px;background:var(--coral);transform:rotate(-3deg);border-radius:2px}
+
+/* Compact rhythm and robust headline wrapping across device widths. */
+.hero{min-height:calc(100vh - 120px);padding-top:5vh;padding-bottom:4vh}
+.hero h1{line-height:.98}
+.hero-scroll{left:2vw}
+.section{padding-top:62px;padding-bottom:62px}
+.section-head{margin-bottom:24px}
+.manifesto{padding-top:68px;padding-bottom:68px}
+footer{min-height:280px;padding-top:44px}
+@media (max-width:720px){
+  .hero{min-height:auto;padding:28px 16px 24px}
+  .hero h1{font-size:44px;line-height:1.04;letter-spacing:-.08em}
+  .hero h1 span{white-space:normal}
+  .outline-text{color:var(--ink);-webkit-text-stroke:0}
+  .hero-copy>p{margin:16px 0;line-height:1.55}
+  .hero-card-wrap{min-height:300px;margin-top:3px}
+  .hero-score-card{height:270px;width:274px}
+  .hero-score-card:before{left:16px;top:45px;height:130px}
+  .hero-score-card:after{inset:45px 15px 60px}
+  .score-card-top{inset:13px 14px auto;font-size:7px}
+  .trophy-ball{left:18px;top:45px;width:40px;height:26px;font-size:8px}
+  .finalist{top:87px}.finalist-left{left:38px}.finalist-right{right:28px}
+  .hero-score-card .avatar{width:49px;height:49px;font-size:19px}
+  .finalist strong{font-size:9px}.finalist>span:last-child{width:17px;height:17px;font-size:8px}
+  .final-score{top:164px;width:calc(100% - 52px);padding:8px 0;gap:12px}.final-score b{font-size:17px}
+  .card-slogan{left:18px;right:18px;bottom:19px;font-size:15px}
+  .section{padding-top:38px;padding-bottom:38px}
+  .section-head{margin-bottom:18px}
+  .manifesto{padding-top:46px;padding-bottom:46px}
+  footer{min-height:260px;padding-top:36px}
+}
+
+@media (min-width:721px){
+  .mini-surface>section:not(.ticker),.mini-surface>footer{min-height:640px}
+  .mini-surface .hero{padding-top:26px;padding-bottom:24px}
+  .mini-surface .hero h1{font-size:42px;line-height:1.04}
+  .mini-surface .hero-copy>p{margin:15px 0;line-height:1.5}
+  .mini-surface .hero-card-wrap{min-height:270px;margin-top:-10px}
+  .mini-surface .hero-score-card{height:260px;width:270px}
+  .mini-surface .hero-score-card:before{left:15px;top:43px;height:126px}
+  .mini-surface .hero-score-card:after{inset:43px 14px 57px}
+  .mini-surface .score-card-top{inset:13px 14px auto;font-size:7px}
+  .mini-surface .trophy-ball{left:18px;top:43px;width:40px;height:26px;font-size:8px}
+  .mini-surface .finalist{top:85px}.mini-surface .finalist-left{left:36px}.mini-surface .finalist-right{right:26px}
+  .mini-surface .hero-score-card .avatar{width:47px;height:47px;font-size:18px}
+  .mini-surface .final-score{top:159px;width:calc(100% - 50px);padding:8px 0;gap:12px}.mini-surface .final-score b{font-size:17px}
+  .mini-surface .card-slogan{left:18px;right:18px;bottom:18px;font-size:15px}
+  .mini-surface .section{padding-top:38px;padding-bottom:38px}
+  .mini-surface .manifesto{padding-top:46px;padding-bottom:46px}
+  .mini-surface footer{min-height:260px;padding-top:36px}
+}

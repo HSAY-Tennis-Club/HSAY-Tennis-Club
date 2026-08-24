@@ -458,7 +458,7 @@ export function HSAYClub() {
 
       <footer>
         <div className="footer-brand"><span className="brand-mark footer-mark">HSAY<i /></span><p>Hit · Spin · Ace & You</p></div>
-        <div className="footer-slogan">撕烂全场，我来闪耀。<br /><em>今天演了，下次横扫。</em></div>
+        <div className="footer-slogan">撕烂全场，我来闪耀。<br /><em><span className="slogan-strike">今天演了</span>，<strong>下次横扫。</strong></em></div>
         <div className="footer-meta"><span>© 2026 HSAY TENNIS CLUB</span><span>MADE WITH PRIDE IN SHANGHAI</span></div>
       </footer>
 
