@@ -197,7 +197,7 @@ footer { min-height:390px; background:var(--ink); color:#fff; padding:70px 6vw 3
 .card-slogan{left:34px;right:34px;bottom:31px;text-align:left;font-size:24px;line-height:1.05}
 
 /* Mini program: fixed 375px viewport with page-like vertical snapping. */
-.mini-surface{height:100dvh;overflow-y:auto;overscroll-behavior-y:contain;scroll-snap-type:y mandatory;scroll-behavior:smooth;scroll-padding-top:96px}
+.mini-surface{height:100dvh;overflow-y:auto;overscroll-behavior-y:contain;scroll-snap-type:y mandatory;scroll-behavior:smooth;scroll-padding-top:64px}
 .mini-surface .ticker{display:none}
 .mini-surface>section:not(.ticker),.mini-surface>footer{scroll-snap-align:start;scroll-snap-stop:always;min-height:calc(100dvh - 65px)}
 .mini-surface .site-header{position:sticky;top:0}.mini-surface .surface-notice{position:sticky;top:64px;z-index:39}

@@ -253,10 +253,11 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <span className="brand-mark">HSAY<i /></span>
         </a>
         <nav className={mobileMenu ? "nav-open" : ""} aria-label="主导航">
+          <a href="#top" onClick={() => setMobileMenu(false)}>首页</a>
           <a href="#events" onClick={() => setMobileMenu(false)}>赛事</a>
           <a href="#ranking" onClick={() => setMobileMenu(false)}>排名</a>
           <a href="#players" onClick={() => setMobileMenu(false)}>球员</a>
-          <a href="#h2h" onClick={() => setMobileMenu(false)}>H2H</a>
+          <a href={surface === "mini" ? "/member?surface=mini" : "/member"} onClick={() => setMobileMenu(false)}>我的</a>
         </nav>
         <div className="header-actions">
           <div className="surface-toggle" role="group" aria-label="切换 Web 或小程序模式">
