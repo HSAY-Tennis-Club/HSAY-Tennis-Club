@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 
 const metrics = [
-  { label: "实力", score: 88, delta: "+4" },
-  { label: "稳定", score: 84, delta: "+2" },
-  { label: "压制", score: 71, delta: "+3" },
-  { label: "韧性", score: 79, delta: "+1" },
-  { label: "调整", score: 76, delta: "+3" },
-  { label: "关键分", score: 86, delta: "+5" },
+  { label: "正手", self: 88, peer: 82, delta: "+4" },
+  { label: "反手", self: 84, peer: 79, delta: "+2" },
+  { label: "网前", self: 71, peer: 76, delta: "+3" },
+  { label: "截击", self: 79, peer: 73, delta: "+1" },
+  { label: "切削", self: 76, peer: 81, delta: "+3" },
+  { label: "发球", self: 86, peer: 84, delta: "+5" },
 ];
 
 const recentMatches = [
@@ -20,7 +20,20 @@ const recentMatches = [
   { result: "W", opponent: "猪猪", type: "双打", score: "15–6", date: "07.21" },
   { result: "W", opponent: "川林贯空", type: "双打", score: "15–13", date: "07.14" },
   { result: "L", opponent: "刀刀", type: "单打", score: "12–15", date: "07.08" },
+  { result: "W", opponent: "Max", type: "双打", score: "15–12", date: "07.02" },
+  { result: "W", opponent: "CY", type: "双打", score: "15–10", date: "06.26" },
+  { result: "L", opponent: "川林贯空", type: "单打", score: "9–15", date: "06.20" },
+  { result: "W", opponent: "Andrew", type: "双打", score: "15–13", date: "06.14" },
+  { result: "W", opponent: "Peter", type: "双打", score: "15–11", date: "06.08" },
+  { result: "L", opponent: "宇凡", type: "单打", score: "10–15", date: "06.01" },
+  { result: "W", opponent: "小沙", type: "双打", score: "15–7", date: "05.26" },
+  { result: "W", opponent: "虎", type: "双打", score: "15–9", date: "05.18" },
+  { result: "L", opponent: "Loker", type: "单打", score: "12–15", date: "05.10" },
+  { result: "W", opponent: "猪猪", type: "双打", score: "15–8", date: "05.03" },
+  { result: "W", opponent: "Ivan", type: "双打", score: "15–12", date: "04.26" },
 ] as const;
+
+const bestieCandidates = ["宇凡", "Loker", "CY", "Andrew", "刀刀", "小沙", "猪猪", "Max"];
 
 function radarPolygon(values: number[]) {
   return `polygon(${values.map((rawValue, index) => {
@@ -34,6 +47,14 @@ function radarPolygon(values: number[]) {
 export function MemberDashboard({ displayName }: { displayName: string }) {
   const name = displayName.split("@")[0];
   const [surface, setSurface] = useState<"web" | "mini">("web");
+  const [metricMode, setMetricMode] = useState<"self" | "peer">("self");
+  const [formWindow, setFormWindow] = useState<10 | 20>(10);
+  const [besties, setBesties] = useState<string[]>(["宇凡", "CY"]);
+  const [wishSent, setWishSent] = useState(false);
+
+  const visibleMetrics = metrics.map((metric) => ({ ...metric, score: metricMode === "self" ? metric.self : metric.peer }));
+  const visibleMatches = recentMatches.slice(0, formWindow);
+  const formWins = visibleMatches.filter((match) => match.result === "W").length;
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("surface") === "mini") setSurface("mini");
@@ -62,32 +83,41 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
           <div className="member-stats"><div><strong>17–10</strong><span>单打战绩</span></div><div><strong>24–6</strong><span>双打战绩</span></div><div><strong>72%</strong><span>总胜率</span></div></div>
         </article>
         <article className="performance-panel panel">
-          <div className="panel-title"><div><span className="section-kicker">LAST 8 MATCHES</span><h2>六维技术表现</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
+          <div className="panel-title"><div><span className="section-kicker">TECHNICAL DIMENSIONS</span><h2>六维技术表现</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
+          <div className="metric-mode-toggle" role="group" aria-label="选择自评或他评"><button className={metricMode === "self" ? "active" : ""} onClick={() => setMetricMode("self")}>自评</button><button className={metricMode === "peer" ? "active" : ""} onClick={() => setMetricMode("peer")}>他评</button></div>
           <div className="metric-bars">
-            {metrics.map((metric) => <div className="metric-bar" key={metric.label}><span>{metric.label}</span><div><i style={{width: `${metric.score}%`}} /></div><strong>{metric.score}</strong><em className={metric.delta.startsWith("-") ? "negative" : ""}>{metric.delta}</em></div>)}
+            {visibleMetrics.map((metric) => <div className="metric-bar" key={metric.label}><span>{metric.label}</span><div><i style={{width: `${metric.score}%`}} /></div><strong>{metric.score}</strong><em className={metric.delta.startsWith("-") ? "negative" : ""}>{metric.delta}</em></div>)}
           </div>
         </article>
         <article className="panel member-radar-panel">
-          <div className="panel-title"><div><span className="section-kicker">MATCH PROFILE</span><h2>六维比赛画像</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
+          <div className="panel-title"><div><span className="section-kicker">MATCH PROFILE · {metricMode === "self" ? "SELF" : "PEER"}</span><h2>六维比赛画像</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
           <div className="member-radar-wrap">
             <div className="radar-wrap">
-              {metrics.map((metric, index) => <div className={`radar-label member-radar-label member-radar-label-${index + 1}`} key={metric.label}>{metric.label} <b>{metric.score}</b></div>)}
-              <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(metrics.map((metric) => metric.score)) }} /></div>
+              {visibleMetrics.map((metric, index) => <div className={`radar-label member-radar-label member-radar-label-${index + 1}`} key={metric.label}>{metric.label} <b>{metric.score}</b></div>)}
+              <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(visibleMetrics.map((metric) => metric.score)) }} /></div>
             </div>
           </div>
           <p className="radar-note">数值基于已登记比赛样本，六个维度的定义与权重仍可继续讨论。</p>
         </article>
         <article className="panel form-panel">
-          <div className="form-heading"><div><span className="section-kicker">RECENT FORM</span><h2>近期状态</h2></div><strong>5 胜 · 3 负</strong></div>
-          <div className="form-sequence" aria-label="最近八场比赛结果">
-            {recentMatches.map((match, index) => <span className={match.result === "W" ? "form-win" : "form-loss"} key={`${match.date}-${match.opponent}`}>{match.result}<small>{index + 1}</small></span>)}
+          <div className="form-heading"><div><span className="section-kicker">RECENT FORM</span><h2>近期状态</h2></div><strong>{formWins} 胜 · {formWindow - formWins} 负</strong></div>
+          <div className="form-window-toggle" role="group" aria-label="选择近期比赛范围"><button className={formWindow === 10 ? "active" : ""} onClick={() => setFormWindow(10)}>最近 10 场</button><button className={formWindow === 20 ? "active" : ""} onClick={() => setFormWindow(20)}>最近 20 场</button></div>
+          <div className="form-sequence" aria-label={`最近${formWindow}场比赛结果`}>
+            {visibleMatches.map((match, index) => <span className={match.result === "W" ? "form-win" : "form-loss"} key={`${match.date}-${match.opponent}`}>{match.result}<small>{index + 1}</small></span>)}
           </div>
           <div className="recent-match-list">
-            {recentMatches.slice(0, 4).map((match) => <div key={`${match.date}-${match.opponent}`}><b className={match.result === "W" ? "result-win" : "result-loss"}>{match.result}</b><span><strong>vs {match.opponent}</strong><small>{match.date} · {match.type}</small></span><em>{match.score}</em></div>)}
+            {visibleMatches.slice(0, 5).map((match) => <div key={`${match.date}-${match.opponent}`}><b className={match.result === "W" ? "result-win" : "result-loss"}>{match.result}</b><span><strong>vs {match.opponent}</strong><small>{match.date} · {match.type}</small></span><em>{match.score}</em></div>)}
           </div>
           <div className="form-legend"><span><i className="legend-win-dot" />W · 胜</span><span><i className="legend-loss-dot" />L · 负</span><small>按比赛日期由近到远</small></div>
         </article>
         <article className="panel coach-note"><span className="section-kicker">CLOSE FRIEND NOTE · 08.21</span><h2>下一场，别急着闪耀。</h2><p>二发被攻后的第一拍容易过早变线。下一次训练先用 70% 力量打深中路，把回合拉到第四拍再启动正手。你已经够快了，现在要学会让对手先着急。</p><div><span>密友备注</span><b>二发 + 1</b><b>反手深度</b><b>关键分耐心</b></div></article>
+        <article className="panel bestie-panel">
+          <div className="panel-title"><div><span className="section-kicker">MY ENEMY·BESTIE</span><h2>我的敌密 <small>BESTIE</small></h2></div><span className="private-chip">最多 5 位</span></div>
+          <p className="bestie-intro">选出最想约球、最想赢、也最懂你戏剧张力的密友。许愿成功后，解锁一枚专属胜利徽章，并在下一场赛果卡留下彩蛋。</p>
+          <div className="bestie-picker">{bestieCandidates.map((candidate) => <button key={candidate} className={besties.includes(candidate) ? "selected" : ""} onClick={() => setBesties((current) => current.includes(candidate) ? current.filter((item) => item !== candidate) : current.length < 5 ? [...current, candidate] : current)} aria-pressed={besties.includes(candidate)}>{candidate}{besties.includes(candidate) ? " ✓" : ""}</button>)}</div>
+          <div className="bestie-footer"><span>{besties.length}/5 已选 · {besties.length ? besties.join("、") : "先选一位敌密"}</span><button className={`wish-button ${wishSent ? "wished" : ""}`} onClick={() => setWishSent(true)} disabled={!besties.length}>{wishSent ? "愿望已点亮 ✦" : "许愿胜利"}</button></div>
+          {wishSent && <div className="wish-reward">胜利后获得：<b>敌密胜利徽章</b>、一条赛果彩蛋，以及下一场训练建议优先解锁。</div>}
+        </article>
         <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人及获授权成员；密友备注：仅本人和被授权查看的密友；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
       </section>
       <nav className={`mobile-bottom-nav member-mobile-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="我的数据导航">
