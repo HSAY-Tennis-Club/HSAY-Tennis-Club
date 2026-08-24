@@ -3,12 +3,17 @@
 import { useEffect, useState } from "react";
 
 const metrics = [
-  { label: "正手", self: 88, peer: 82, delta: "+4" },
-  { label: "反手", self: 84, peer: 79, delta: "+2" },
-  { label: "网前", self: 71, peer: 76, delta: "+3" },
-  { label: "截击", self: 79, peer: 73, delta: "+1" },
-  { label: "切削", self: 76, peer: 81, delta: "+3" },
-  { label: "发球", self: 86, peer: 84, delta: "+5" },
+  { label: "正手", self: 8.8, peer: 8.2, delta: "+0.4" },
+  { label: "反手", self: 8.4, peer: 7.9, delta: "+0.2" },
+  { label: "网前", self: 7.1, peer: 7.6, delta: "+0.3" },
+  { label: "截击", self: 7.9, peer: 7.3, delta: "+0.1" },
+  { label: "切削", self: 7.6, peer: 8.1, delta: "+0.3" },
+  { label: "发球", self: 8.6, peer: 8.4, delta: "+0.5" },
+];
+
+const radarMetrics = [
+  { label: "实力", value: 95 }, { label: "压制", value: 28 }, { label: "韧性", value: 17 },
+  { label: "调整力", value: 33 }, { label: "稳定", value: 87 }, { label: "样本", value: 50 },
 ];
 
 const recentMatches = [
@@ -86,15 +91,15 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
           <div className="panel-title"><div><span className="section-kicker">TECHNICAL DIMENSIONS</span><h2>六维技术表现</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
           <div className="metric-mode-toggle" role="group" aria-label="选择自评或他评"><button className={metricMode === "self" ? "active" : ""} onClick={() => setMetricMode("self")}>自评</button><button className={metricMode === "peer" ? "active" : ""} onClick={() => setMetricMode("peer")}>他评</button></div>
           <div className="metric-bars">
-            {visibleMetrics.map((metric) => <div className="metric-bar" key={metric.label}><span>{metric.label}</span><div><i style={{width: `${metric.score}%`}} /></div><strong>{metric.score}</strong><em className={metric.delta.startsWith("-") ? "negative" : ""}>{metric.delta}</em></div>)}
+            {visibleMetrics.map((metric) => <div className="metric-bar" key={metric.label}><span>{metric.label}</span><div><i style={{width: `${metric.score * 10}%`}} /></div><strong>{metric.score.toFixed(1)}</strong><small>/10</small><em className={metric.delta.startsWith("-") ? "negative" : ""}>{metric.delta}</em></div>)}
           </div>
         </article>
         <article className="panel member-radar-panel">
-          <div className="panel-title"><div><span className="section-kicker">MATCH PROFILE · {metricMode === "self" ? "SELF" : "PEER"}</span><h2>六维比赛画像</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
+          <div className="panel-title"><div><span className="section-kicker">MATCH PROFILE · BETA</span><h2>六维比赛画像</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
           <div className="member-radar-wrap">
             <div className="radar-wrap">
-              {visibleMetrics.map((metric, index) => <div className={`radar-label member-radar-label member-radar-label-${index + 1}`} key={metric.label}>{metric.label} <b>{metric.score}</b></div>)}
-              <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(visibleMetrics.map((metric) => metric.score)) }} /></div>
+              {radarMetrics.map((metric, index) => <div className={`radar-label member-radar-label member-radar-label-${index + 1}`} key={metric.label}>{metric.label} <b>{metric.value}</b></div>)}
+              <div className="radar-grid" aria-label="按照六项数值绘制的比赛画像雷达图"><i className="radar-ring ring-100" /><i className="radar-ring ring-75" /><i className="radar-ring ring-50" /><i className="radar-ring ring-25" /><i className="radar-axis axis-1" /><i className="radar-axis axis-2" /><i className="radar-axis axis-3" /><span className="radar-value" style={{ clipPath: radarPolygon(radarMetrics.map((metric) => metric.value)) }} /></div>
             </div>
           </div>
           <p className="radar-note">数值基于已登记比赛样本，六个维度的定义与权重仍可继续讨论。</p>
