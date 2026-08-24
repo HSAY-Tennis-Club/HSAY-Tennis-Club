@@ -207,8 +207,8 @@ function TennisCourtIcon() {
   return <svg className="event-court-logo" viewBox="0 0 32 24" aria-hidden="true"><rect x="2" y="2" width="28" height="20" rx="1" /><path d="M16 2v20M2 12h28M7 2v20M25 2v20M7 7h18M7 17h18" /></svg>;
 }
 
-export function HSAYClub() {
-  const [surface, setSurface] = useState<"web" | "mini">("web");
+export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | "mini" }) {
+  const [surface, setSurface] = useState<"web" | "mini">(initialSurface);
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
   const [eloWindow, setEloWindow] = useState<20 | 50>(20);
   const [eventStage, setEventStage] = useState("final");
@@ -221,7 +221,9 @@ export function HSAYClub() {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("surface") === "mini") setSurface("mini");
+    const querySurface = new URLSearchParams(window.location.search).get("surface");
+    if (querySurface === "mini") setSurface("mini");
+    else if (!querySurface && window.matchMedia("(max-width: 720px), (orientation: portrait) and (max-width: 1024px)").matches) setSurface("mini");
   }, []);
 
   const left = players.find((player) => player.id === leftId) ?? players[1];
@@ -486,7 +488,7 @@ export function HSAYClub() {
         <span className="section-kicker">THE HSAY CODE</span><h2>四个字母，<br />一群缺你不可的人。</h2>
         <div className="letter-grid">
           <article><b>H</b><h3>HIT</h3><p>爆抽 · 撕烂全场</p><span>每一次挥拍都不退让，上场就是主宰比赛的女王。</span></article>
-          <article><b>S</b><h3>SPIN</h3><p>旋转 · 纯属我演</p><span>失误不是技术不行，全靠精湛的“演技”维持体面。</span></article>
+          <article><b>S</b><h3>SPIN</h3><p>旋转 · 弧线跳动</p><span>失误波动不是技术问题，全靠精湛的“演技”维持体面。</span></article>
           <article><b>A</b><h3>ACE</h3><p>得分 · 我来闪耀</p><span>实力碾压的高光时刻，接受属于你的全场注目。</span></article>
           <article><b>Y</b><h3>YOU</h3><p>你 · 缺你不可</p><span>没有你的配合演出，再嚣张的球技也只是独角戏。</span></article>
         </div>

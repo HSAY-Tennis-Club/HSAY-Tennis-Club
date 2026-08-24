@@ -408,7 +408,14 @@ footer{min-height:280px;padding-top:44px}
 .mini-surface .roster-card p{font-size:8px}
 .member-mini-surface .ntrp-options{flex-wrap:wrap}
 .member-mini-surface .ntrp-options button{padding:7px 9px;font-size:9px}
-.member-mini-surface .member-header{background:#171717}
+.member-mini-surface .member-header{background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line)}
+.member-mini-surface .member-header .brand-mark{color:var(--ink)}
+.member-mini-surface .member-header .surface-toggle{background:#dfdcd4}
+.member-mini-surface .member-hero{text-align:center}
+.member-mini-surface .member-hero>div{display:flex;flex-direction:column;align-items:center}
+.mini-surface .surface-notice,.member-mini-surface .surface-notice{position:relative;top:auto}
+.mini-surface .hero-copy{text-align:center}
+.mini-surface .hero h1{align-items:center}
 
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
