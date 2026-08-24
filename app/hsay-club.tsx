@@ -169,7 +169,7 @@ function Avatar({ player, size = "medium" }: { player: Player; size?: "small" | 
   return <span className={`avatar avatar-${size} avatar-${player.color}`} aria-hidden="true">{player.initial}</span>;
 }
 
-export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; displayName?: string }) {
+export function HSAYClub() {
   const [surface, setSurface] = useState<"web" | "mini">("web");
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
   const [eventStage, setEventStage] = useState("final");
@@ -215,14 +215,14 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
             <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
             <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
           </div>
-          <a className="login-button" href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>
+          <a className="login-button" href="/member">
             <span className="status-dot" />
-            {isSignedIn ? `${displayName?.split("@")[0] ?? "会员"} · 会员中心` : "会员登录"}
+            我的数据
           </a>
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
-      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>已切换为微信触控版式 · 数据与 Web 同步</span></div>}
+      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>375px 固定画布 · 上下滑动单屏翻页</span></div>}
 
       <section className="hero" id="top">
         <div className="hero-copy">
@@ -240,7 +240,7 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
           <div className="rainbow-orbit orbit-two" />
           <article className="hero-score-card">
             <div className="score-card-top"><span className="live-pill"><i /> TEAM FINAL</span><span>2025.08.12</span></div>
-            <div className="trophy-ball">✦</div>
+            <div className="trophy-ball">ACE</div>
             <div className="finalist finalist-left">
               <span className="avatar avatar-large avatar-blue">永</span>
               <strong>永瘦宫</strong><span>2</span>
@@ -431,9 +431,9 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
 
       <section className="section metrics-section" id="membership">
         <div className="metric-copy">
-          <span className="section-kicker">MEMBERS ONLY</span><h2>你的球，不止输赢。</h2><p>登录后解锁个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
+          <span className="section-kicker">MEMBER DATA</span><h2>你的球，不止输赢。</h2><p>会员数据舱展示个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
           <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>密友备注</li></ul>
-          <a className="primary-button light-button" href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>{isSignedIn ? "进入我的数据舱" : "登录解锁我的数据"} <span>→</span></a>
+          <a className="primary-button light-button" href="/member">进入我的数据舱 <span>→</span></a>
           <small>会员数据仅本人及获授权的俱乐部管理员可见</small>
         </div>
         <div className="metric-preview" aria-label="会员技术数据预览">
@@ -464,7 +464,7 @@ export function HSAYClub({ isSignedIn, displayName }: { isSignedIn: boolean; dis
       </footer>
 
       <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
-        <a href="#top">⌂<span>首页</span></a><a href="#events">▦<span>赛事</span></a><a href="#ranking">↗<span>排名</span></a><a href="#players">●<span>球员</span></a><a href={isSignedIn ? "/member" : "/signin-with-chatgpt?return_to=%2Fmember"}>◎<span>我的</span></a>
+        <a href="#top">⌂<span>首页</span></a><a href="#events">▦<span>赛事</span></a><a href="#ranking">↗<span>排名</span></a><a href="#players">●<span>球员</span></a><a href="/member">◎<span>我的</span></a>
       </nav>
     </main>
   );

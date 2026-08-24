@@ -44,11 +44,12 @@ test("server-renders the public HSAY club experience", async () => {
   assert.match(html, /密友备注/);
   assert.doesNotMatch(html, /上海 · LGBTQ\+ Friendly Tennis Club/);
   assert.doesNotMatch(html, /NTRP 3\.0|NTRP 3\.5|NTRP 4\.0|NTRP 4\.5/);
-  assert.match(html, /会员登录/);
+  assert.match(html, /我的数据/);
+  assert.doesNotMatch(html, /auth\.openai\.com|signin-with|signout-with/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
-test("keeps the member dashboard behind server-side sign-in", async () => {
+test("renders the member preview without third-party authentication", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/member", { redirect: "manual", headers: { accept: "text/html" } }),
@@ -56,6 +57,10 @@ test("keeps the member dashboard behind server-side sign-in", async () => {
     context,
   );
 
-  assert.ok([302, 303, 307, 308].includes(response.status));
-  assert.match(response.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=/);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /我的数据舱/);
+  assert.match(html, /近期状态/);
+  assert.match(html, /退出预览/);
+  assert.doesNotMatch(html, /auth\.openai\.com|signin-with|signout-with/i);
 });
