@@ -411,10 +411,16 @@ footer{min-height:280px;padding-top:44px}
 .member-mini-surface .member-header{background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line)}
 .member-mini-surface .member-header .brand-mark{color:var(--ink)}
 .member-mini-surface .member-header .surface-toggle{background:#dfdcd4}
-.member-mini-surface .member-hero{text-align:center}
-.member-mini-surface .member-hero>div{display:flex;flex-direction:column;align-items:center}
+.member-mini-surface .member-header{height:64px;padding:0 18px}
+.member-mini-surface .member-header .brand-sub{display:none}
+.member-mini-surface .member-hero{display:none}
+.member-mini-surface .member-grid{padding-top:12px}
+.member-mini-surface .member-profile{min-width:0;overflow:hidden}
+.member-mini-surface .member-profile>p{white-space:normal;line-height:1.5}
 .mini-surface .hero-copy{text-align:center}
 .mini-surface .hero h1{align-items:center}
+.mini-surface .footer-slogan{font-size:24px;line-height:1.12;white-space:nowrap;letter-spacing:-.065em;text-align:left}
+@media (max-width:720px){.member-mini-surface .member-header{height:calc(64px + env(safe-area-inset-top, 0px));padding:env(safe-area-inset-top, 0px) 18px 0}}
 
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
