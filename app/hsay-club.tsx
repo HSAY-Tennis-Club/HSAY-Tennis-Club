@@ -274,7 +274,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         <div className="hero-copy">
           <div className="eyebrow"><span>SHANGHAI</span><b>·</b><span>150 PLAYERS</span><b>·</b><span>EST. 2024</span></div>
           <h1><span className="hero-line hero-line-top">场下宝贝，</span><span className="hero-line hero-line-bottom">场上撕飞。</span></h1>
-          <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />也认真接住每一次“纯属我演”。</p>
+          <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />每一场都是“真我演出”。</p>
           <div className="hero-actions">
             <a className="primary-button" href="#events">查看赛事安排 <span>↗</span></a>
             <a className="text-button" href="#ranking">2026 赛季排名 <span>↓</span></a>
