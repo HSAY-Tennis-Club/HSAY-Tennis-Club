@@ -369,6 +369,33 @@ footer{min-height:280px;padding-top:44px}
 .event-date{padding:17px 4px 5px}.event-date>span{margin:0}.event-date small{font-size:7px}.mini-surface .event-date{height:78px}.mini-surface .event-date b{font-size:24px}.mini-surface .event-date small{font-size:7px}.ranking-section .section{padding-top:0}.ranking-section .ranking-row{min-height:68px}.ranking-section .ranking-note{padding:12px 16px}.ranking-section .ranking-table-head{padding:10px 16px}.ranking-section .rank-player{gap:11px}.ranking-section .rank-player .avatar{width:34px;height:34px;font-size:14px}.ranking-section .points strong{font-size:15px}.elo-window-toggle{display:flex;gap:6px;margin-left:auto}.elo-window-toggle button{border:1px solid #b7d3b2;background:transparent;border-radius:999px;padding:6px 9px;font:800 8px/1 var(--font-geist-mono);color:#087958;cursor:pointer}.elo-window-toggle button.active{background:#087958;color:#fff}.h2h-multi-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;max-width:210px}.h2h-multi-picker small{width:100%;font-size:8px;color:#888}.h2h-multi-picker button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:5px 7px;font-size:8px;cursor:pointer}.h2h-multi-picker button.active{background:var(--lime);border-color:var(--ink)}
 @media (max-width:720px){.ranking-section .ranking-row{min-height:62px}.ranking-section .ranking-note{padding:10px 12px}.elo-window-toggle{margin:10px 0 0}.ranking-section .ranking-note span{font-size:8px}.roster-head>div p{display:none}.h2h-multi-picker{max-width:140px}.h2h-multi-picker button{font-size:7px;padding:4px 6px}}
 
+/* Compact phone viewport: leave room for the iPhone Dynamic Island and keep
+   the core content visible instead of allowing fixed chrome to eat the page. */
+@media (max-width:720px){
+  body{padding-bottom:0}
+  html{scroll-padding-top:104px}
+  .mini-surface .site-header,.member-mini-surface .member-header{height:calc(64px + env(safe-area-inset-top, 0px));min-height:64px;padding-top:env(safe-area-inset-top, 0px);box-sizing:border-box}
+  .mini-surface .surface-notice,.member-mini-surface .surface-notice{top:calc(64px + env(safe-area-inset-top, 0px))}
+  .mini-surface .hero-line-bottom{color:#5b42e8}
+  .mini-surface footer{min-height:300px;padding:40px 16px 20px;gap:28px}
+  .mini-surface .footer-slogan{font-size:28px;line-height:1.08;white-space:nowrap;letter-spacing:-.07em;text-align:left}
+  .mini-surface .footer-slogan br{display:block}
+  .mini-surface .scorecard-head{padding:13px 10px}
+  .mini-surface .scorecard-head>div{margin:8px 0;gap:8px}
+  .mini-surface .scorecard-head strong{font-size:11px}
+  .mini-surface .scorecard-head b{font-size:27px}
+  .mini-surface .scorecard-head small{font-size:7px}
+  .mini-surface .fixture-row{min-height:54px}
+  .mini-surface .fixture-row strong{font-size:12px}
+}
+
+.h2h-multi-avatars{display:flex;justify-content:center;align-items:flex-end;gap:5px;min-height:70px;margin:12px 0 4px;flex-wrap:wrap;max-width:180px}
+.h2h-multi-avatar{display:flex;flex-direction:column;align-items:center;gap:3px}.h2h-multi-avatar .avatar{width:48px;height:48px;font-size:18px}.h2h-multi-avatar small{font-size:7px;max-width:54px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hero-line-bottom{color:#5b42e8!important}
+.mini-surface{padding-bottom:0}
+.ranking-section .ranking-row{min-height:52px}.ranking-section .ranking-note{padding:9px 16px}.ranking-section .ranking-table-head{padding:8px 16px}.ranking-section .movement{min-width:0}.ranking-section .movement.flat{display:none}
+@media (max-width:720px){.ranking-section .ranking-row{min-height:48px}.ranking-section .ranking-note{padding:8px 12px}.ranking-section .rank-player .avatar{width:30px;height:30px;font-size:12px}.h2h-multi-avatars{gap:3px;max-width:120px;min-height:58px}.h2h-multi-avatar .avatar{width:36px;height:36px;font-size:14px}.h2h-multi-avatar small{font-size:6px;max-width:40px}.mini-surface .h2h-multi-avatars{max-width:112px}}
+
 /* Final responsive pass: archive cards stay multi-column in mini mode, while the
    event mark remains a small court cue beside the status instead of covering dates. */
 .event-status-line>span{display:inline-block;padding:5px 8px;border-radius:12px;background:var(--ink);color:#fff;font:700 7px/1 var(--font-geist-mono)}

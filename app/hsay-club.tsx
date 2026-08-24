@@ -359,7 +359,6 @@ export function HSAYClub() {
               </div>
             ))}
           </div>
-          <p className="scorecard-note">比分按赛事登记顺序展示，颜色仅用于区分双方。</p>
         </article>}
         {activeEvent.id === "event-0818" && <article className="arrangement-card">
           <div className="arrangement-heading"><b>半决赛对阵</b><span>4 队 · 每队 6 位球员</span></div>
@@ -390,7 +389,7 @@ export function HSAYClub() {
           <div className="ranking-table-wrap">
             <div className="ranking-note"><b>年度积分榜</b><span>截至 2026.08.23 · 依据已登记赛事累计</span></div>
             <div className="ranking-table-head"><span>排名 / 球员</span><span>总积分</span><span>参赛站次</span><span>变化</span></div>
-            {players.slice(0, 14).map((player) => {
+            {players.slice(0, 20).map((player) => {
               const delta = player.previousRank - player.rank;
               return (
                 <article className="ranking-row" key={player.id}>
@@ -401,7 +400,7 @@ export function HSAYClub() {
                   </div>
                   <div className="points"><strong>{player.points.toLocaleString()}</strong><span>PTS</span></div>
                   <div className="stops"><strong>{player.stops}</strong><span>本期计分站</span></div>
-                  <div className={`movement ${delta > 0 ? "up" : delta < 0 ? "down" : "flat"}`}>{delta > 0 ? `↑${delta}` : delta < 0 ? `↓${Math.abs(delta)}` : "—"}</div>
+                  {delta !== 0 && <div className={`movement ${delta > 0 ? "up" : "down"}`}>{delta > 0 ? `↑${delta}` : `↓${Math.abs(delta)}`}</div>}
                 </article>
               );
             })}
@@ -410,14 +409,14 @@ export function HSAYClub() {
 
         {rankingMode !== "annual" && (
           <div className="ranking-table-wrap">
-            <div className="ranking-note"><b>{rankingMode === "doubles" ? "双打实力榜" : "单打实力榜"} · Elo</b><span>按最近 {eloWindow} 场已登记赛果计算</span><div className="elo-window-toggle" role="group" aria-label="选择 Elo 样本范围"><button className={eloWindow === 20 ? "active" : ""} onClick={() => setEloWindow(20)}>近期 20 场</button><button className={eloWindow === 50 ? "active" : ""} onClick={() => setEloWindow(50)}>近期 50 场</button></div></div>
+            <div className="ranking-note"><b>{rankingMode === "doubles" ? "双打" : "单打"} 实力榜 · Elo</b><span>按最近 {eloWindow} 场已登记赛果计算</span><div className="elo-window-toggle" role="group" aria-label="选择 Elo 样本范围"><button className={eloWindow === 20 ? "active" : ""} onClick={() => setEloWindow(20)}>近期 20 场</button><button className={eloWindow === 50 ? "active" : ""} onClick={() => setEloWindow(50)}>近期 50 场</button></div></div>
             <div className="ranking-table-head"><span>排名 / 球员</span><span>Elo</span><span>样本场次</span><span>变化</span></div>
             {(rankingMode === "doubles" ? doublesRanking : singlesRanking).map((player, index) => (
               <article className="ranking-row" key={player.name}>
                 <div className="rank-player"><span className={`rank-number rank-${index + 1}`}>{String(index + 1).padStart(2, "0")}</span><span className="avatar avatar-medium avatar-lime">{player.initial}</span><div><strong>{player.name}</strong><span>稳定样本</span></div></div>
                 <div className="points"><strong>{player.score}</strong><span>ELO</span></div>
                 <div className="stops"><strong>{player.samples}</strong><span>场{rankingMode === "doubles" ? "双打" : "单打"}</span></div>
-                <div className={`movement ${player.movement.startsWith("+") ? "up" : player.movement.startsWith("-") ? "down" : "flat"}`}>{player.movement}</div>
+                {player.movement !== "—" && <div className={`movement ${player.movement.startsWith("+") ? "up" : "down"}`}>{player.movement}</div>}
               </article>
             ))}
           </div>
@@ -444,7 +443,7 @@ export function HSAYClub() {
 
       <section className="section h2h-section" id="h2h">
         <div className="section-head">
-          <div><span className="section-kicker">HEAD TO HEAD</span><h2>谁是谁的主人？</h2><p>选择两位球员，查看已登记赛季中的交锋关系。</p></div>
+          <div><span className="section-kicker">HEAD TO HEAD</span><h2>谁是谁的主人？</h2></div>
           <span className="public-tag">公开赛果</span>
         </div>
         <div className="h2h-board">
@@ -459,7 +458,7 @@ export function HSAYClub() {
             <label>右方 · 1 人</label>
             <select value={rightId} onChange={(event) => { setRightId(event.target.value); setRightIds((current) => current.includes(event.target.value) ? current : [event.target.value, ...current].slice(0, 4)); }} aria-label="选择右方球员">{players.filter((player) => player.id !== leftId).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
             <div className="h2h-multi-picker" aria-label="追加右方球员"><small>右方可多选</small>{players.filter((player) => player.id !== leftId).slice(0, 8).map((player) => <button key={player.id} className={rightIds.includes(player.id) ? "active" : ""} onClick={() => setRightIds((current) => current.includes(player.id) ? (current.length > 1 ? current.filter((id) => id !== player.id) : current) : current.length < 4 ? [...current, player.id] : current)}>{player.name}</button>)}</div>
-            <Avatar player={right} size="large" /><h3>{right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
+            <div className="h2h-multi-avatars">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-multi-avatar" key={player.id}><Avatar player={player} size="medium" /><small>{player.name}</small></div> : null; })}</div><h3>{rightIds.length > 1 ? `${right.name} 等` : right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
           </div>
           <div className="h2h-summary">
             <div><span>已登记交锋</span><strong>{leftWins + rightWins} 次</strong></div>

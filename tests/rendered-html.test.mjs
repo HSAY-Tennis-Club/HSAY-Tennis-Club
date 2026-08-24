@@ -38,7 +38,7 @@ test("server-renders the public HSAY club experience", async () => {
   assert.match(html, /完整赛果/);
   assert.doesNotMatch(html, /WIN · 胜方|LOST · 负方/);
   assert.doesNotMatch(html, /最近赛果/);
-  assert.match(html, /scorecard-note/);
+  assert.doesNotMatch(html, /比分按赛事登记顺序展示/);
   assert.match(html, /2026.*08.*12/);
   assert.match(html, /积分与排名/);
   assert.match(html, /川林贯空/);
