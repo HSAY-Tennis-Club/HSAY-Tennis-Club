@@ -124,10 +124,10 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
         </article>
         <article className="panel coach-note"><span className="section-kicker">CLOSE FRIEND NOTE · 08.21</span><h2>下一场，别急着闪耀。</h2><p>二发被攻后的第一拍容易过早变线。下一次训练先用 70% 力量打深中路，把回合拉到第四拍再启动正手。你已经够快了，现在要学会让对手先着急。</p><div><span>密友备注</span><b>二发 + 1</b><b>反手深度</b><b>关键分耐心</b></div></article>
         <article className="panel bestie-panel">
-          <div className="panel-title"><div><span className="section-kicker">MY ENEMY·BESTIE</span><h2>我的敌密 <small>BESTIE</small></h2></div><span className="private-chip">最多 5 位</span></div>
+          <div className="panel-title"><div><span className="section-kicker">MY ENEMY·BESTIE</span><h2>我的敌密</h2></div><span className="private-chip">最多 5 位</span></div>
           <p className="bestie-intro">选出最想约球、最想赢、也最懂你戏剧张力的密友。许愿成功后，解锁一枚专属胜利徽章，并在下一场赛果卡留下彩蛋。</p>
           <div className="bestie-picker">{bestieCandidates.map((candidate) => <button key={candidate} className={besties.includes(candidate) ? "selected" : ""} onClick={() => setBesties((current) => current.includes(candidate) ? current.filter((item) => item !== candidate) : current.length < 5 ? [...current, candidate] : current)} aria-pressed={besties.includes(candidate)}>{candidate}{besties.includes(candidate) ? " ✓" : ""}</button>)}</div>
-          <div className="bestie-footer"><span>{besties.length}/5 已选 · {besties.length ? besties.join("、") : "先选一位敌密"}</span><button className={`wish-button ${wishSent ? "wished" : ""}`} onClick={() => setWishSent(true)} disabled={!besties.length}>{wishSent ? "愿望已点亮 ✦" : "许愿胜利"}</button></div>
+          <div className="bestie-footer"><span>{besties.length}/5 已选</span><button className={`wish-button ${wishSent ? "wished" : ""}`} onClick={() => setWishSent(true)} disabled={!besties.length}>{wishSent ? "愿望已点亮 ✦" : "许愿胜利"}</button></div>
           {wishSent && <div className="wish-reward">胜利后获得：<b>敌密胜利徽章</b>、一条赛果彩蛋，以及下一场训练建议优先解锁。</div>}
         </article>
         <article className="panel ntrp-panel">
