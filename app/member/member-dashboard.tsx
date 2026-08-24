@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 const metrics = [
   { label: "实力", score: 88, delta: "+4" },
   { label: "稳定", score: 84, delta: "+2" },
@@ -22,13 +24,21 @@ const recentMatches = [
 
 export function MemberDashboard({ displayName }: { displayName: string }) {
   const name = displayName.split("@")[0];
+  const [surface, setSurface] = useState<"web" | "mini">("web");
 
   return (
-    <main className="member-shell">
+    <main className={surface === "mini" ? "mini-surface member-shell member-mini-surface" : "member-shell"}>
       <header className="member-header">
         <a className="brand" href="/"><span className="brand-mark">HSAY<i /></span><span className="brand-sub">MEMBER CLUBHOUSE</span></a>
-        <div><span className="member-name">你好，{name}</span><a className="logout-link" href="/">退出预览</a></div>
+        <div className="member-header-actions">
+          <div className="surface-toggle" role="group" aria-label="切换 Web 或小程序模式">
+            <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
+            <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
+          </div>
+          <span className="member-name">你好，{name}</span><a className="logout-link" href="/">退出预览</a>
+        </div>
       </header>
+      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>375px 固定画布 · 上下滑动查看我的数据</span></div>}
       <div className="member-hero">
         <div><span className="section-kicker">PRIVATE PERFORMANCE LAB</span><h1>我的数据舱</h1><p>所有指标仅你本人和获授权的俱乐部管理员可见。</p></div>
         <a className="back-link" href="/">← 返回公开首页</a>

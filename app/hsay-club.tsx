@@ -202,7 +202,6 @@ export function HSAYClub() {
       <header className="site-header">
         <a className="brand" href="#top" aria-label="HSAY 首页">
           <span className="brand-mark">HSAY<i /></span>
-          <span className="brand-sub">沪上阿姨网球俱乐部</span>
         </a>
         <nav className={mobileMenu ? "nav-open" : ""} aria-label="主导航">
           <a href="#events" onClick={() => setMobileMenu(false)}>赛事</a>
@@ -394,7 +393,7 @@ export function HSAYClub() {
           {roster.map((player) => (
             <article className="roster-card" key={player.id}>
               <Avatar player={player} size="large" />
-              <div><span>2026 年度积分 #{player.rank}</span><h3>{player.name}</h3><p>{player.matches ? `${player.matches} 场已登记比赛` : `${player.totalStops} 站参赛记录`}{player.titles ? ` · ${player.titles} 冠` : ""}</p></div>
+              <div className="roster-card-copy"><strong className="roster-rank"><b>#{String(player.rank).padStart(2, "0")}</b><span>年度积分</span></strong><h3>{player.name}</h3><p>{player.matches ? `${player.matches} 场已登记比赛` : `${player.totalStops} 站参赛记录`}{player.titles ? ` · ${player.titles} 冠` : ""}</p></div>
               <b>{player.points.toLocaleString()}<small>积分</small></b>
             </article>
           ))}

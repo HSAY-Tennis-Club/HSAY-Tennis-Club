@@ -207,3 +207,66 @@ footer { min-height:390px; background:var(--ink); color:#fff; padding:70px 6vw 3
 .mini-surface .finalist{top:101px}.mini-surface .finalist-left{left:43px}.mini-surface .finalist-right{right:33px}.mini-surface .hero-score-card .avatar{width:54px;height:54px;font-size:21px}
 .mini-surface .final-score{top:188px;width:calc(100% - 60px);padding:11px 0}.mini-surface .final-score b{font-size:19px}.mini-surface .card-slogan{left:22px;right:22px;bottom:23px;font-size:18px}
 @media (min-width:721px){main.mini-surface{height:min(812px,calc(100dvh - 48px));margin:24px auto;scrollbar-width:none}main.mini-surface::-webkit-scrollbar{display:none}.mini-surface>section:not(.ticker),.mini-surface>footer{min-height:747px}}
+
+/* Final density pass: keep the key sections information-rich without losing hierarchy. */
+.section{padding-top:82px;padding-bottom:82px}
+.section-head{margin-bottom:30px}
+.event-card{min-height:118px}
+.fixture-row{min-height:72px}
+.match-row{min-height:96px}
+.ranking-row{min-height:82px}
+.h2h-board{min-height:510px}
+.manifesto{padding-top:88px;padding-bottom:88px}
+footer{min-height:320px;padding-top:54px}
+
+.roster-card-copy{min-width:0}
+.roster-rank{display:flex;align-items:baseline;gap:8px;color:var(--coral);font:800 8px/1 var(--font-geist-mono);letter-spacing:.08em}
+.roster-rank b{font:950 26px/.9 var(--font-geist-mono);letter-spacing:-.08em;color:var(--ink)}
+.roster-rank span{color:#888}
+.roster-card-copy h3{margin:5px 0 3px}
+.member-header-actions{display:flex;align-items:center;gap:16px}
+
+/* The member data page uses the same 375px mini-program canvas as the public surface. */
+.member-mini-surface .member-header{position:sticky;top:0;z-index:40}
+.member-mini-surface .surface-notice{position:sticky;top:64px;z-index:39}
+.member-mini-surface .member-header-actions{gap:7px}
+.member-mini-surface .member-name,.member-mini-surface .logout-link{display:none}
+.member-mini-surface .member-hero{padding:42px 16px 20px}
+.member-mini-surface .member-hero h1{font-size:44px;margin:10px 0}
+.member-mini-surface .member-hero p{font-size:10px;line-height:1.6}
+.member-mini-surface .back-link{margin-top:15px;font-size:9px}
+.member-mini-surface .member-grid{padding:0 16px 82px;gap:8px}
+.member-mini-surface .member-grid{grid-template-columns:1fr}
+.member-mini-surface .privacy-panel{grid-column:auto}
+.member-mini-surface .member-profile{max-width:none}
+.member-mini-surface .panel{padding:16px}
+.member-mini-surface .member-avatar{width:82px;height:82px;margin:4px auto 17px;font-size:34px}
+.member-mini-surface .rank-chip{right:12px;top:12px;padding:7px;font-size:7px}
+.member-mini-surface .member-profile h2{font-size:20px}
+.member-mini-surface .member-stats{margin-top:20px;padding-top:16px}
+.member-mini-surface .member-stats strong{font-size:12px}
+.member-mini-surface .panel h2{font-size:20px}
+.member-mini-surface .metric-bars{margin-top:17px}
+.member-mini-surface .metric-bar{margin:11px 0}
+.member-mini-surface .form-panel{min-height:0}
+.member-mini-surface .form-sequence{gap:5px;margin:15px 0}
+.member-mini-surface .recent-match-list>div{min-height:42px}
+.member-mini-surface .coach-note>p{font-size:10px;line-height:1.75}
+.member-mini-surface .coach-note>div{margin-top:17px}
+.member-mini-surface .privacy-panel{gap:13px}
+.member-mini-surface .privacy-icon{width:48px;height:48px;font-size:22px}
+.member-mini-surface .privacy-panel p{font-size:9px;line-height:1.65}
+
+@media (max-width:720px){
+  .section{padding-top:46px;padding-bottom:46px}
+  .event-card{min-height:104px}
+  .fixture-row{min-height:64px}
+  .match-row{min-height:102px}
+  .ranking-row{min-height:74px}
+  .h2h-board{min-height:455px}
+  .manifesto{padding-top:58px;padding-bottom:58px}
+  footer{min-height:300px;padding-top:42px}
+  .roster-rank b{font-size:22px}
+  .member-header-actions{gap:7px}
+  .member-header-actions .surface-toggle button{padding:6px 7px;font-size:7px}
+}
