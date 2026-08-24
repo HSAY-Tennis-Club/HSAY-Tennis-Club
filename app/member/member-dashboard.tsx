@@ -39,6 +39,8 @@ const recentMatches = [
 ] as const;
 
 const bestieCandidates = ["宇凡", "Loker", "CY", "Andrew", "刀刀", "小沙", "猪猪", "Max"];
+const relationshipMasters = [{ name: "宇凡", losses: 6 }, { name: "Loker", losses: 4 }, { name: "刀刀", losses: 3 }];
+const relationshipServants = [{ name: "CY", wins: 7 }, { name: "猪猪", wins: 5 }, { name: "Andrew", wins: 3 }];
 
 function radarPolygon(values: number[]) {
   return `polygon(${values.map((rawValue, index) => {
@@ -49,6 +51,11 @@ function radarPolygon(values: number[]) {
   }).join(", ")})`;
 }
 
+function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" }) {
+  const paths = { home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z", calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2", rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z", players: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0", profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0" } as const;
+  return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
+}
+
 export function MemberDashboard({ displayName }: { displayName: string }) {
   const name = displayName.split("@")[0];
   const [surface, setSurface] = useState<"web" | "mini">("web");
@@ -56,6 +63,7 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
   const [formWindow, setFormWindow] = useState<10 | 20>(10);
   const [besties, setBesties] = useState<string[]>(["宇凡", "CY"]);
   const [wishSent, setWishSent] = useState(false);
+  const [ntrp, setNtrp] = useState("3.5");
 
   const visibleMetrics = metrics.map((metric) => ({ ...metric, score: metricMode === "self" ? metric.self : metric.peer }));
   const visibleMatches = recentMatches.slice(0, formWindow);
@@ -123,10 +131,21 @@ export function MemberDashboard({ displayName }: { displayName: string }) {
           <div className="bestie-footer"><span>{besties.length}/5 已选 · {besties.length ? besties.join("、") : "先选一位敌密"}</span><button className={`wish-button ${wishSent ? "wished" : ""}`} onClick={() => setWishSent(true)} disabled={!besties.length}>{wishSent ? "愿望已点亮 ✦" : "许愿胜利"}</button></div>
           {wishSent && <div className="wish-reward">胜利后获得：<b>敌密胜利徽章</b>、一条赛果彩蛋，以及下一场训练建议优先解锁。</div>}
         </article>
+        <article className="panel ntrp-panel">
+          <div className="panel-title"><div><span className="section-kicker">PLAYER SELF-ASSESSMENT</span><h2>NTRP 自评</h2></div><span className="private-chip">仅自己可见</span></div>
+          <p>用一个当前最接近你的级别记录状态，不用于俱乐部排名。</p>
+          <div className="ntrp-options" role="group" aria-label="选择 NTRP 级别">{["3.0", "3.5", "4.0", "4.5"].map((level) => <button key={level} className={ntrp === level ? "active" : ""} onClick={() => setNtrp(level)}>{level}</button>)}</div>
+          <small>当前自评：<b>NTRP {ntrp}</b> · 仅用于个人画像</small>
+        </article>
+        <article className="panel relationship-panel">
+          <div className="panel-title"><div><span className="section-kicker">POWER DYNAMIC</span><h2>我的主人和仆人</h2></div><span className="private-chip">私密关系</span></div>
+          <p>输得越多，主人圆圈越大；赢得越多，仆人圆圈越大。只是俱乐部内部的戏剧化记录。</p>
+          <div className="relationship-columns"><div><b className="relationship-label">主人 · 输给 TA</b><div className="relationship-bubbles">{relationshipMasters.map((item) => <div className="relationship-bubble master-bubble" style={{ width: `${52 + item.losses * 8}px`, height: `${52 + item.losses * 8}px` }} key={item.name}><strong>{item.name}</strong><small>{item.losses} 负</small></div>)}</div></div><div><b className="relationship-label">仆人 · 赢过 TA</b><div className="relationship-bubbles">{relationshipServants.map((item) => <div className="relationship-bubble servant-bubble" style={{ width: `${52 + item.wins * 8}px`, height: `${52 + item.wins * 8}px` }} key={item.name}><strong>{item.name}</strong><small>{item.wins} 胜</small></div>)}</div></div></div>
+        </article>
         <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人及获授权成员；密友备注：仅本人和被授权查看的密友；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
       </section>
       <nav className={`mobile-bottom-nav member-mobile-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="我的数据导航">
-        <a href={surface === "mini" ? "/?surface=mini#top" : "/#top"}>⌂<span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "/#events"}>▦<span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "/#ranking"}>↗<span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "/#players"}>●<span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}>◎<span>我的</span></a>
+        <a href={surface === "mini" ? "/?surface=mini#top" : "/#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "/#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "/#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "/#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );

@@ -183,6 +183,21 @@ function Avatar({ player, size = "medium" }: { player: Player; size?: "small" | 
   return <span className={`avatar avatar-${size} avatar-${player.color}`} aria-hidden="true">{player.initial}</span>;
 }
 
+function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" }) {
+  const paths = {
+    home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z",
+    calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2",
+    rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z",
+    players: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
+    profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0",
+  } as const;
+  return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
+}
+
+function TennisCourtIcon() {
+  return <svg className="event-court-logo" viewBox="0 0 32 24" aria-hidden="true"><rect x="2" y="2" width="28" height="20" rx="1" /><path d="M16 2v20M2 12h28M7 2v20M25 2v20M7 7h18M7 17h18" /></svg>;
+}
+
 export function HSAYClub() {
   const [surface, setSurface] = useState<"web" | "mini">("web");
   const [rankingMode, setRankingMode] = useState<"annual" | "singles" | "doubles">("annual");
@@ -208,7 +223,8 @@ export function HSAYClub() {
 
   const roster = useMemo(() => {
     const query = playerQuery.trim().toLowerCase();
-    const filtered = query ? players.filter((player) => player.name.toLowerCase().includes(query)) : players;
+    const filtered = query ? players.filter((player) => player.name.toLowerCase().includes(query)) : [...players];
+    filtered.sort((a, b) => (b.matches ?? b.totalStops) - (a.matches ?? a.totalStops));
     return showAllPlayers || query ? filtered : filtered.slice(0, 8);
   }, [playerQuery, showAllPlayers]);
 
@@ -299,7 +315,7 @@ export function HSAYClub() {
         <div className="event-list">
           {eventList.map((event) => (
             <article className="event-card" key={event.id}>
-              <div className={`event-date event-date-${event.tone}`}><span>{event.month}</span><b>{event.day}</b><small>{event.year}</small></div>
+              <div className={`event-date event-date-${event.tone}`}><TennisCourtIcon /><span>{event.month}</span><b>{event.day}</b><small>{event.year}</small></div>
               <div className="event-main"><span>{event.status}</span><h3>{event.title}</h3><p>{event.meta}</p></div>
               <div className="event-format"><span>赛事安排</span><b>{event.format}</b></div>
               <a href="#event-detail" onClick={() => setActiveEventId(event.id)} aria-label={`查看${event.title}`}>→</a>
@@ -477,7 +493,7 @@ export function HSAYClub() {
       </footer>
 
       <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
-        <a href={surface === "mini" ? "/?surface=mini#top" : "#top"}>⌂<span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "#events"}>▦<span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "#ranking"}>↗<span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "#players"}>●<span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}>◎<span>我的</span></a>
+        <a href={surface === "mini" ? "/?surface=mini#top" : "#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );
