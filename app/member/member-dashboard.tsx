@@ -85,7 +85,6 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
           <span className="member-name">你好，{name}</span><a className="logout-link" href="/">退出预览</a>
         </div>
       </header>
-      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b><span>375px 固定画布 · 上下滑动查看我的数据</span></div>}
       <div className="member-hero">
         <div><span className="section-kicker">PRIVATE PERFORMANCE LAB</span><h1>我的数据舱</h1><p>所有指标仅你本人和获授权的俱乐部管理员可见。</p></div>
         <a className="back-link" href="/">← 返回公开首页</a>

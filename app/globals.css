@@ -413,7 +413,6 @@ footer{min-height:280px;padding-top:44px}
 .member-mini-surface .member-header .surface-toggle{background:#dfdcd4}
 .member-mini-surface .member-hero{text-align:center}
 .member-mini-surface .member-hero>div{display:flex;flex-direction:column;align-items:center}
-.mini-surface .surface-notice,.member-mini-surface .surface-notice{position:relative;top:auto}
 .mini-surface .hero-copy{text-align:center}
 .mini-surface .hero h1{align-items:center}
 

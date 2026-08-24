@@ -270,8 +270,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
-      {surface === "mini" && <div className="surface-notice" role="status" aria-live="polite"><b>小程序模式</b></div>}
-
       <section className="hero" id="top">
         <div className="hero-copy">
           <div className="eyebrow"><span>SHANGHAI</span><b>·</b><span>150 PLAYERS</span><b>·</b><span>EST. 2024</span></div>
