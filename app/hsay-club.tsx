@@ -26,7 +26,7 @@ type Fixture = {
   winner: "left" | "right";
 };
 
-const players: Player[] = [
+export const players: Player[] = [
   { id: "chuanlin", name: "川林贯空", rank: 1, previousRank: 1, bestRank: 1, points: 20213, stops: 21, totalStops: 21, color: "violet", initial: "川" },
   { id: "yufan", name: "宇凡", rank: 2, previousRank: 2, bestRank: 2, points: 17840, stops: 21, totalStops: 42, matches: 58, titles: 7, color: "lime", initial: "宇" },
   { id: "connor", name: "Connor", rank: 3, previousRank: 3, bestRank: 3, points: 17280, stops: 21, totalStops: 24, color: "orange", initial: "C" },
@@ -464,11 +464,11 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         </div>
         <div className="roster-grid">
           {roster.map((player) => (
-            <article className="roster-card" key={player.id}>
+            <a className="roster-card" key={player.id} href={surface === "mini" ? sitePath(`member?surface=mini&player=${player.id}`) : sitePath(`member?player=${player.id}`)}>
               <Avatar player={player} size="large" />
               <div className="roster-card-copy"><strong className="roster-rank"><b>#{String(player.rank).padStart(2, "0")}</b><span>年度积分</span></strong><h3>{player.name}</h3><p>{player.matches ? `${player.matches} 场已登记比赛` : `${player.totalStops} 站参赛记录`}{player.titles ? ` · ${player.titles} 冠` : ""}</p></div>
               <b>{player.points.toLocaleString()}<small>积分</small></b>
-            </article>
+            </a>
           ))}
         </div>
         {!playerQuery && <button className="roster-more" onClick={() => setShowAllPlayers(!showAllPlayers)}>{showAllPlayers ? "收起名单 ↑" : `展开已导入的 ${players.length} 位球员 ↓`}</button>}
@@ -483,24 +483,19 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <div className="h2h-player left-player">
             <label>左方</label>
             <div className="h2h-search-row"><input list="left-player-options" value={leftQuery} onChange={(event) => setLeftQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("left"); }} placeholder="搜索球员" aria-label="搜索左方球员" /><button onClick={() => addH2HPlayer("left")} disabled={!leftQuery.trim()}>添加</button><datalist id="left-player-options">{players.filter((player) => !rightIds.includes(player.id) && !leftIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
-            <div className="h2h-selected-list" aria-label="已添加的左方球员">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><button onClick={() => removeH2HPlayer("left", player.id)} disabled={leftIds.length <= 1} aria-label={`删除左方${player.name}`}>×</button></div> : null; })}</div>
-            <h3>{leftIds.length > 1 ? `${left.name} 等` : left.name}</h3><span>2026 年度积分 #{left.rank}</span><strong className="h2h-wins">{leftWins}<small>胜</small></strong>
+            <div className="h2h-selected-list" aria-label="已添加的左方球员">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><strong>{player.name}</strong><button onClick={() => removeH2HPlayer("left", player.id)} disabled={leftIds.length <= 1} aria-label={`删除左方${player.name}`}>×</button></div> : null; })}</div>
+            <strong className="h2h-wins">{leftWins}<small>胜</small></strong>
           </div>
           <button className="swap-button" onClick={swapPlayers} aria-label="交换两位球员">⇄</button>
           <div className="versus-mark">VS</div>
           <div className="h2h-player right-player">
             <label>右方</label>
             <div className="h2h-search-row"><input list="right-player-options" value={rightQuery} onChange={(event) => setRightQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("right"); }} placeholder="搜索球员" aria-label="搜索右方球员" /><button onClick={() => addH2HPlayer("right")} disabled={!rightQuery.trim()}>添加</button><datalist id="right-player-options">{players.filter((player) => !leftIds.includes(player.id) && !rightIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
-            <div className="h2h-selected-list" aria-label="已添加的右方球员">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><button onClick={() => removeH2HPlayer("right", player.id)} disabled={rightIds.length <= 1} aria-label={`删除右方${player.name}`}>×</button></div> : null; })}</div>
-            <h3>{rightIds.length > 1 ? `${right.name} 等` : right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
-          </div>
-          <div className="h2h-summary">
-            <div><span>已登记交锋</span><strong>{leftWins + rightWins} 次</strong></div>
-            <div className="h2h-bar"><i style={{ width: `${(leftWins / Math.max(1, leftWins + rightWins)) * 100}%` }} /></div>
-            <div><span>当前领先</span><strong>{leftWins + rightWins === 0 ? "暂无已导入交锋" : leftWins === rightWins ? "平分秋色" : leftWins > rightWins ? left.name : right.name}</strong></div>
+            <div className="h2h-selected-list" aria-label="已添加的右方球员">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><strong>{player.name}</strong><button onClick={() => removeH2HPlayer("right", player.id)} disabled={rightIds.length <= 1} aria-label={`删除右方${player.name}`}>×</button></div> : null; })}</div>
+            <strong className="h2h-wins">{rightWins}<small>胜</small></strong>
           </div>
         </div>
-        {isReferenceH2H && <div className="h2h-history"><span>宇凡 × Sven · 已登记交锋</span>{["Sven / Ethan  4–15  宇凡 / 刀刀","宇凡 / 猪猪  15–4  Sven / Roderick","宇凡  15–6  Sven","Stone / Sven  5–15  宇凡 / 十六","Sven  9–15  宇凡","宇凡  15–13  Sven"].map((item, index) => <div key={item}><small>{index < 2 ? "双打" : index === 2 || index > 3 ? "单打" : "双打"}</small><b>{item}</b></div>)}</div>}
+        {isReferenceH2H && <div className="h2h-history" id="h2h-history">{["Sven / Ethan  4–15  宇凡 / 刀刀","宇凡 / 猪猪  15–4  Sven / Roderick","宇凡  15–6  Sven","Stone / Sven  5–15  宇凡 / 十六","Sven  9–15  宇凡","宇凡  15–13  Sven"].map((item, index) => <div key={item}><small>{index < 2 ? "双打" : index === 2 || index > 3 ? "单打" : "双打"}</small><b>{item}</b></div>)}</div>}
       </section>
 
       <section className="section metrics-section" id="membership">

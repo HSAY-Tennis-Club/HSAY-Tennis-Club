@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { sitePath } from "../site-path";
+import { players as h2hPlayers } from "../hsay-club";
 
 const metrics = [
   { label: "正手", self: 8.8, peer: 8.2, delta: "+0.4" },
@@ -68,7 +69,7 @@ const memberPlayers: Record<string, MemberPlayer> = {
   brian: { name: "Brian", initial: "B", rank: 26, matches: 24, titles: 0, color: "#5ca9ff" },
 };
 
-const bestieCandidates = ["宇凡", "Loker", "CY", "Andrew", "刀刀", "小沙", "猪猪", "Max"];
+const bestieCandidates = h2hPlayers.map((player) => player.name);
 const relationshipMasters = [{ name: "宇凡", losses: 6 }, { name: "Loker", losses: 4 }, { name: "刀刀", losses: 3 }];
 const relationshipServants = [{ name: "CY", wins: 7 }, { name: "猪猪", wins: 5 }, { name: "Andrew", wins: 3 }];
 
