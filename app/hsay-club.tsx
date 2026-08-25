@@ -216,6 +216,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
   const [activeEventId, setActiveEventId] = useState("event-0812");
   const [leftId, setLeftId] = useState("yufan");
   const [rightId, setRightId] = useState("sven");
+  const [leftIds, setLeftIds] = useState<string[]>(["yufan"]);
   const [rightIds, setRightIds] = useState<string[]>(["sven"]);
   const [playerQuery, setPlayerQuery] = useState("");
   const [showAllPlayers, setShowAllPlayers] = useState(false);
@@ -245,6 +246,8 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
   const swapPlayers = () => {
     setLeftId(rightId);
     setRightId(leftId);
+    setLeftIds(rightIds);
+    setRightIds(leftIds);
   };
 
   return (
@@ -258,7 +261,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <a href="#events" onClick={() => setMobileMenu(false)}>赛事</a>
           <a href="#ranking" onClick={() => setMobileMenu(false)}>排名</a>
           <a href="#players" onClick={() => setMobileMenu(false)}>球员</a>
-          <a href={sitePath("about")} onClick={() => setMobileMenu(false)}>关于 HSAY</a>
+          <a href="#about" onClick={() => setMobileMenu(false)}>关于 HSAY</a>
           <a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")} onClick={() => setMobileMenu(false)}>我的</a>
         </nav>
         <div className="header-actions">
@@ -451,16 +454,17 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         </div>
         <div className="h2h-board">
           <div className="h2h-player left-player">
-            <label>左方 · 1 人</label>
-            <select value={leftId} onChange={(event) => setLeftId(event.target.value)} aria-label="选择左方球员">{players.filter((player) => player.id !== rightId).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
-            <Avatar player={left} size="large" /><h3>{left.name}</h3><span>2026 年度积分 #{left.rank}</span><strong className="h2h-wins">{leftWins}<small>胜</small></strong>
+            <label>左方 · {leftIds.length} 人</label>
+            <select value={leftId} onChange={(event) => { const id = event.target.value; setLeftId(id); setLeftIds((current) => [id, ...current.filter((item) => item !== id)].slice(0, 4)); }} aria-label="选择左方球员">{players.filter((player) => !rightIds.includes(player.id)).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
+            <div className="h2h-multi-picker" aria-label="追加左方球员"><small>左方可多选</small>{players.filter((player) => !rightIds.includes(player.id)).slice(0, 8).map((player) => <button key={player.id} className={leftIds.includes(player.id) ? "active" : ""} onClick={() => setLeftIds((current) => { if (!current.includes(player.id)) return current.length < 4 ? [...current, player.id] : current; if (current.length <= 1) return current; const next = current.filter((id) => id !== player.id); if (leftId === player.id) setLeftId(next[0]); return next; })}>{player.name}</button>)}</div>
+            <div className="h2h-multi-avatars">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-multi-avatar" key={player.id}><Avatar player={player} size="medium" /><small>{player.name}</small></div> : null; })}</div><h3>{leftIds.length > 1 ? `${left.name} 等` : left.name}</h3><span>2026 年度积分 #{left.rank}</span><strong className="h2h-wins">{leftWins}<small>胜</small></strong>
           </div>
           <button className="swap-button" onClick={swapPlayers} aria-label="交换两位球员">⇄</button>
           <div className="versus-mark">VS</div>
           <div className="h2h-player right-player">
-            <label>右方 · 1 人</label>
-            <select value={rightId} onChange={(event) => { setRightId(event.target.value); setRightIds((current) => current.includes(event.target.value) ? current : [event.target.value, ...current].slice(0, 4)); }} aria-label="选择右方球员">{players.filter((player) => player.id !== leftId).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
-            <div className="h2h-multi-picker" aria-label="追加右方球员"><small>右方可多选</small>{players.filter((player) => player.id !== leftId).slice(0, 8).map((player) => <button key={player.id} className={rightIds.includes(player.id) ? "active" : ""} onClick={() => setRightIds((current) => current.includes(player.id) ? (current.length > 1 ? current.filter((id) => id !== player.id) : current) : current.length < 4 ? [...current, player.id] : current)}>{player.name}</button>)}</div>
+            <label>右方 · {rightIds.length} 人</label>
+            <select value={rightId} onChange={(event) => { setRightId(event.target.value); setRightIds((current) => current.includes(event.target.value) ? current : [event.target.value, ...current].slice(0, 4)); }} aria-label="选择右方球员">{players.filter((player) => !leftIds.includes(player.id)).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
+            <div className="h2h-multi-picker" aria-label="追加右方球员"><small>右方可多选</small>{players.filter((player) => !leftIds.includes(player.id)).slice(0, 8).map((player) => <button key={player.id} className={rightIds.includes(player.id) ? "active" : ""} onClick={() => setRightIds((current) => { if (!current.includes(player.id)) return current.length < 4 ? [...current, player.id] : current; if (current.length <= 1) return current; const next = current.filter((id) => id !== player.id); if (rightId === player.id) setRightId(next[0]); return next; })}>{player.name}</button>)}</div>
             <div className="h2h-multi-avatars">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-multi-avatar" key={player.id}><Avatar player={player} size="medium" /><small>{player.name}</small></div> : null; })}</div><h3>{rightIds.length > 1 ? `${right.name} 等` : right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
           </div>
           <div className="h2h-summary">
@@ -482,6 +486,21 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         <div className="metric-preview metric-lock-preview" aria-label="会员技术数据预览">
           <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>PRIVATE PROFILE</b><small>登录后查看个人比赛画像</small></span></div><span className="lock-pill">🔒 仅自己可见</span></div>
           <div className="metric-lock-copy"><b>六维比赛画像已移入“我的”</b><p>进入我的数据舱，查看按实际数值渲染的雷达图、近期状态和密友备注。</p><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>打开我的数据舱 →</a></div>
+        </div>
+      </section>
+
+      <section className="section home-about-section" id="about">
+        <div className="home-about-intro">
+          <div>
+            <span className="section-kicker">ABOUT HSAY / SHANGHAI</span>
+            <h2>认真打球，<br />尽兴生活。</h2>
+          </div>
+          <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，每一场都是“真我演出”。</p>
+        </div>
+        <div className="home-about-rule">
+          <span className="section-kicker">OUR COURT, OUR RULES</span>
+          <p>每个人都有自己的上场方式。你可以为一分庆祝，也可以在下一球重新把气势打回来。</p>
+          <a className="text-button" href="#manifesto">读懂四个字母 <span>↓</span></a>
         </div>
       </section>
 

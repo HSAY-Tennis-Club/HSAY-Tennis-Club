@@ -18,7 +18,7 @@ export default function AboutPage() {
           <a href={sitePath("")}>首页</a>
           <a href={`${sitePath("")}#events`}>赛事</a>
           <a href={`${sitePath("")}#ranking`}>排名</a>
-          <a href={sitePath("about")} aria-current="page">关于 HSAY</a>
+          <a href={`${sitePath("")}#about`} aria-current="page">关于 HSAY</a>
         </nav>
         <div className="header-actions">
           <a className="login-button" href={sitePath("member")}>

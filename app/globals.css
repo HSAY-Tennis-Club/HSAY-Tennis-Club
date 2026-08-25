@@ -520,4 +520,56 @@ footer{min-height:280px;padding-top:44px}
 .member-mini-surface .member-hero h1{font-size:var(--footer-slogan-size);margin:6px 0 0}
 .member-mini-surface .member-hero p{font-size:10px;line-height:1.5;margin:8px 0 0}
 .member-mini-surface .member-hero .back-link{display:none}
+
+/* Keep the club story in the home page's compact section rhythm. */
+.home-about-section{background:var(--paper);display:grid;gap:28px;padding-top:52px;padding-bottom:56px}
+.home-about-intro{display:grid;grid-template-columns:1fr .78fr;align-items:end;gap:7vw;padding-bottom:30px;border-bottom:1px solid var(--line)}
+.home-about-intro h2{font-size:clamp(38px,4.5vw,64px);line-height:.94;letter-spacing:-.07em;margin:14px 0 0}
+.home-about-intro>p{max-width:390px;margin:0 0 3px;font-size:13px;line-height:1.8;color:#666}
+.home-about-rule{display:grid;grid-template-columns:.85fr 1fr auto;align-items:center;gap:30px;padding:27px 30px;background:var(--violet);color:#fff;box-shadow:9px 9px 0 var(--ink)}
+.home-about-rule .section-kicker{color:var(--coral)}
+.home-about-rule p{max-width:390px;margin:0;color:#e2ddff;font-size:12px;line-height:1.75}
+.home-about-rule .text-button{color:#fff;font-size:10px;white-space:nowrap}
+
+/* The standalone route uses the same spacing scale as the home sections. */
+.about-hero{padding-top:52px;padding-bottom:64px}
+.about-code{padding-top:72px;padding-bottom:76px}
+.about-belief{padding-top:72px;padding-bottom:78px}
+
+@media (max-width:720px){
+  .home-about-section{gap:22px;padding:38px 16px 44px}
+  .home-about-intro{display:block;padding-bottom:22px}
+  .home-about-intro h2{font-size:44px;margin-top:12px}
+  .home-about-intro>p{margin-top:18px;font-size:11px;line-height:1.7}
+  .home-about-rule{display:block;padding:22px 18px;box-shadow:7px 7px 0 var(--ink)}
+  .home-about-rule p{margin:17px 0 22px;font-size:11px;line-height:1.7}
+  .home-about-rule .text-button{font-size:10px}
+  .about-hero{padding-top:32px;padding-bottom:42px}
+  .about-hero-copy h1{font-size:52px;margin-top:18px}
+  .about-hero-note{margin-top:30px}
+  .about-code{padding-top:44px;padding-bottom:50px}
+  .about-code-heading h2{font-size:44px}
+  .about-belief{padding-top:48px;padding-bottom:54px}
+  .about-belief h2{font-size:44px}
+}
 .member-mini-surface{scroll-snap-type:none;scroll-behavior:auto}
+
+/* Use the same primary-player plus multi-select treatment on every selector. */
+.h2h-player select{margin-bottom:18px}
+.h2h-player .h2h-multi-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;width:min(100%,220px);max-width:220px;margin:0 auto 16px}
+.h2h-player .h2h-multi-picker small{width:100%;font-size:10px;color:#888;text-align:center}
+.h2h-player .h2h-multi-picker button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}
+.h2h-player .h2h-multi-picker button.active{background:var(--lime);border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.h2h-player .h2h-multi-avatars{margin-top:0}
+.h2h-player .h2h-multi-avatars+h3{margin-top:8px}
+.bestie-selector{display:flex;flex-direction:column;align-items:center;margin:24px 0 18px}
+.bestie-selector>label{font-size:10px;color:#888;margin-bottom:8px}
+.bestie-primary-select{appearance:none;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:5px 30px 5px 5px;font-size:18px;font-weight:800;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#111 50%),linear-gradient(135deg,#111 50%,transparent 50%);background-position:calc(100% - 12px) 50%,calc(100% - 7px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.bestie-multi-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%;max-width:680px;margin-top:22px}
+.bestie-multi-picker small{width:100%;font-size:10px;color:#888;text-align:center}
+.bestie-multi-picker button{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:8px 12px;font-size:10px;font-weight:750;cursor:pointer}
+.bestie-multi-picker button.selected{background:var(--lime);border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.member-mini-surface .h2h-player .h2h-multi-picker{max-width:140px}
+.member-mini-surface .bestie-selector{margin:16px 0}
+.member-mini-surface .bestie-multi-picker{gap:5px;margin-top:16px}
+.member-mini-surface .bestie-multi-picker button{padding:7px 9px;font-size:9px}
