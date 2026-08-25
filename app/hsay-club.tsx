@@ -258,6 +258,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <a href="#events" onClick={() => setMobileMenu(false)}>赛事</a>
           <a href="#ranking" onClick={() => setMobileMenu(false)}>排名</a>
           <a href="#players" onClick={() => setMobileMenu(false)}>球员</a>
+          <a href={sitePath("about")} onClick={() => setMobileMenu(false)}>关于 HSAY</a>
           <a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")} onClick={() => setMobileMenu(false)}>我的</a>
         </nav>
         <div className="header-actions">

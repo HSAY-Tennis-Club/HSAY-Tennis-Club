@@ -450,6 +450,40 @@ footer{min-height:280px;padding-top:44px}
 .mini-surface{--footer-slogan-size:24px}
 .mini-surface .section-head h2,.mini-surface .event-detail-intro h2,.mini-surface .metric-copy h2,.mini-surface .manifesto>h2{font-size:var(--footer-slogan-size)}
 
+/* About page: the club code and its identity tags live in one focused story. */
+.about-page{min-height:100vh;background:var(--paper)}
+.about-header nav a[aria-current="page"]{color:var(--coral)}
+.about-hero{min-height:calc(100vh - 78px);padding:11vh 6vw 9vh;display:grid;grid-template-columns:1.2fr .8fr;align-items:end;gap:8vw;background:radial-gradient(circle at 78% 18%,rgba(130,99,255,.18),transparent 25%),var(--paper)}
+.about-hero-copy h1{font-size:clamp(64px,10vw,150px);line-height:.82;letter-spacing:-.095em;margin:24px 0 34px;font-weight:950}
+.about-hero-copy h1 em{font-style:normal;color:var(--violet)}
+.about-hero-copy>p{font-size:clamp(16px,1.5vw,22px);line-height:1.7;color:#4d4a45;margin:0}
+.about-hero-note{max-width:310px;justify-self:end;padding:28px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.about-note-mark{font:900 12px/1 var(--font-geist-mono);letter-spacing:.2em;color:var(--coral)}
+.about-hero-note p{font-size:24px;line-height:1.2;letter-spacing:-.05em;margin:24px 0 35px;font-weight:850}
+.about-hero-note .text-button{font-size:11px}
+.about-code{padding:115px 6vw 125px;background:var(--white)}
+.about-code-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:58px}
+.about-code-heading h2{font-size:clamp(50px,6.5vw,100px);line-height:.9;letter-spacing:-.075em;margin:17px 0 0;font-weight:950}
+.about-code-heading>p{max-width:300px;font-size:12px;line-height:1.8;color:#777;margin:0 0 7px}
+.about-letter-grid{margin:0}
+.about-belief{padding:130px 6vw;background:var(--violet);color:#fff;display:grid;grid-template-columns:1fr .8fr;gap:7vw;align-items:end}
+.about-belief h2{font-size:clamp(50px,6.5vw,100px);line-height:.88;letter-spacing:-.075em;margin:18px 0 0;font-weight:950}
+.about-belief h2 em{font-style:normal;color:var(--lime)}
+.about-belief>p{max-width:390px;margin:0 0 8px;color:#e2ddff;font-size:14px;line-height:1.9}
+.about-tags{background:var(--lime);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.about-tag-line{min-height:94px;padding:24px 6vw;display:flex;align-items:center;justify-content:center;gap:24px;font:850 14px/1 var(--font-geist-mono);letter-spacing:.16em}
+.about-tag-line b{color:var(--coral);font-size:18px}
+.about-stat-line{min-height:132px;padding:24px 6vw;display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:20px;border-top:1px solid rgba(20,20,20,.28)}
+.about-stat-line>div{display:flex;align-items:baseline;justify-content:center;gap:13px}.about-stat-line strong{font:950 38px/1 var(--font-geist-mono);letter-spacing:-.08em}.about-stat-line span{font-size:11px;font-weight:750}.about-stat-line>i{width:5px;height:5px;border-radius:50%;background:var(--ink)}
+.about-page footer{margin-top:0}
+@media (max-width:720px){
+  .about-header{height:64px;padding:0 18px}.about-header nav{display:none}.about-header .login-button{min-height:36px;padding:0 12px;font-size:10px}
+  .about-hero{min-height:calc(100vh - 64px);padding:58px 20px 55px;display:block}.about-hero-copy h1{font-size:61px;line-height:.85;margin:22px 0 24px}.about-hero-copy>p{font-size:14px;line-height:1.7}.about-hero-note{max-width:none;margin-top:62px;padding:20px 0}.about-hero-note p{font-size:22px;margin:19px 0 26px}
+  .about-code{padding:65px 20px 70px}.about-code-heading{display:block;margin-bottom:34px}.about-code-heading h2{font-size:52px;margin-top:14px}.about-code-heading>p{margin-top:25px;font-size:11px}.about-letter-grid{grid-template-columns:1fr 1fr}.about-letter-grid article{min-height:245px;padding:20px 15px}.about-letter-grid h3{font-size:23px;margin:47px 0 5px}.about-letter-grid article>b{font-size:110px;right:-10px;top:-12px}.about-letter-grid span{left:15px;right:15px;bottom:16px;font-size:9px;line-height:1.55}
+  .about-belief{padding:70px 20px 75px;display:block}.about-belief h2{font-size:53px;margin-top:17px}.about-belief>p{margin-top:35px;font-size:12px;line-height:1.8}
+  .about-tag-line{min-height:78px;padding:18px 14px;gap:10px;font-size:9px;letter-spacing:.1em;white-space:nowrap}.about-tag-line b{font-size:13px}.about-stat-line{grid-template-columns:1fr 1fr;padding:20px 15px;gap:18px 10px}.about-stat-line>i{display:none}.about-stat-line>div{justify-content:flex-start;gap:8px}.about-stat-line strong{font-size:26px}.about-stat-line span{font-size:9px}.about-page footer{min-height:300px}
+}
+
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
 .hero-line{display:block;position:relative;width:max-content;line-height:.92;padding:0 8px 7px 0}
@@ -463,3 +497,15 @@ footer{min-height:280px;padding-top:44px}
 .hero-score-card .finalist{z-index:3}.hero-score-card .final-score{z-index:3}.hero-score-card .trophy-ball{z-index:4}
 .slogan-strike{color:#fff!important}.slogan-strike:after{height:5px;background:var(--coral);top:53%;transform:rotate(-3deg)}
 @media (max-width:720px){.hero h1{align-items:center;font-size:44px}.hero-line{padding-right:4px}.hero-line-bottom:after{right:-3px;height:4px}.surface-notice{margin:7px auto}.court-svg{inset:45px 15px 60px;width:calc(100% - 30px);height:calc(100% - 105px)}}
+
+/* Unified compact rhythm for section headers across Web and mini-program views. */
+.section{padding-top:24px;padding-bottom:40px}
+.section-head{margin-bottom:16px}
+.section-head h2{margin-top:6px}
+.section-head p{margin-top:8px;line-height:1.5}
+.section-kicker{letter-spacing:.12em}
+.web-surface .eyebrow{gap:8px;letter-spacing:.08em;margin-bottom:22px}
+.mini-surface .section{padding-top:20px;padding-bottom:32px}
+.mini-surface .section-head{margin-bottom:14px}
+.mini-surface .section-head p{margin-top:6px}
+.mini-surface .ranking-section{padding-top:16px}

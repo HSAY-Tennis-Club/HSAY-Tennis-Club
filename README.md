@@ -15,12 +15,13 @@ npm run build:static
 
 `npm run dev` 和 `npm run build` 用于本地的 vinext/Worker 运行时；
 `npm run build:static` 用于生成 GitHub Pages 使用的静态资源。GitHub Pages
-由 `.github/workflows/pages.yml` 自动发布仓库中的 `index.html`、`member/`
+由 `.github/workflows/pages.yml` 自动发布仓库中的 `index.html`、`about/`、`member/`
 和 `assets/`，本项目不再使用 ChatGPT Sites 托管。
 
 ## 当前版本
 
 - `/`：游客可访问的公开俱乐部首页
+- `/about`：HSAY 品牌介绍与 THE HSAY CODE
 - `/member`：服务端鉴权的会员数据舱
 - 示例赛事和球员数据目前为演示数据
 - 正式上线前需要接入真实会员库、比赛录入后台与大陆可用的统一身份系统

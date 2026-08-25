@@ -29,9 +29,10 @@ jobs:
           enablement: true
       - name: Prepare static site
         run: |
-          mkdir -p _site/assets _site/member
+          mkdir -p _site/assets _site/member _site/about
           cp index.html _site/index.html
           cp member/index.html _site/member/index.html
+          cp about/index.html _site/about/index.html
           cp assets/* _site/assets/
           cp public/og.png _site/og.png
       - name: Upload artifact
