@@ -71,7 +71,8 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
   const formWins = visibleMatches.filter((match) => match.result === "W").length;
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("surface") !== "mini" && window.matchMedia("(max-width: 720px), (orientation: portrait) and (max-width: 1024px)").matches) setSurface("mini");
+    const querySurface = new URLSearchParams(window.location.search).get("surface");
+    if (querySurface === "mini" || (!querySurface && window.matchMedia("(max-width: 720px), (orientation: portrait) and (max-width: 1024px)").matches)) setSurface("mini");
   }, []);
 
   return (
