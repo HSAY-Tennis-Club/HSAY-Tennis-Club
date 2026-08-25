@@ -397,6 +397,15 @@ footer{min-height:280px;padding-top:44px}
 .ranking-section .ranking-row{min-height:52px}.ranking-section .ranking-note{padding:9px 16px}.ranking-section .ranking-table-head{padding:8px 16px}.ranking-section .movement{min-width:0}.ranking-section .movement.flat{display:none}
 @media (max-width:720px){.ranking-section .ranking-row{min-height:48px}.ranking-section .ranking-note{padding:8px 12px}.ranking-section .rank-player .avatar{width:30px;height:30px;font-size:12px}.h2h-multi-avatars{gap:3px;max-width:120px;min-height:58px}.h2h-multi-avatar .avatar{width:36px;height:36px;font-size:14px}.h2h-multi-avatar small{font-size:6px;max-width:40px}.mini-surface .h2h-multi-avatars{max-width:112px}}
 
+/* Keep the ranking header compact in the mini-program surface. The previous
+   flex gap and control margin stacked together and left too much air between
+   the description and the filters. */
+.mini-surface .ranking-section{padding-top:16px}
+.mini-surface .ranking-section .inverse-head{gap:6px;margin-bottom:10px}
+.mini-surface .ranking-section .inverse-head h2{margin-top:2px}
+.mini-surface .ranking-section .inverse-head p{margin-top:2px;line-height:1.35}
+.mini-surface .ranking-section .ranking-controls{margin-top:0;gap:6px}
+
 /* Final responsive pass: archive cards stay multi-column in mini mode, while the
    event mark remains a small court cue beside the status instead of covering dates. */
 .event-status-line>span{display:inline-block;padding:5px 8px;border-radius:12px;background:var(--ink);color:#fff;font:700 7px/1 var(--font-geist-mono)}
@@ -434,6 +443,12 @@ footer{min-height:280px;padding-top:44px}
 .member-mini-surface .performance-panel,.member-mini-surface .member-radar-panel,.member-mini-surface .form-panel{overflow:hidden}
 .member-mini-surface .metric-bar{min-width:0;grid-template-columns:40px minmax(0,1fr) 28px 20px 25px}
 .member-mini-surface .metric-bar>div{min-width:0}
+
+/* Keep the main display titles aligned with the footer slogan at every size. */
+:root{--footer-slogan-size:clamp(32px,4vw,58px)}
+.section-head h2,.event-detail-intro h2,.metric-copy h2{font-size:var(--footer-slogan-size)}
+.mini-surface{--footer-slogan-size:24px}
+.mini-surface .section-head h2,.mini-surface .event-detail-intro h2,.mini-surface .metric-copy h2{font-size:var(--footer-slogan-size)}
 
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
