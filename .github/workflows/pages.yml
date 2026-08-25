@@ -25,10 +25,17 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Prepare static site
+        run: |
+          mkdir -p _site/assets _site/member
+          cp index.html _site/index.html
+          cp member/index.html _site/member/index.html
+          cp assets/* _site/assets/
+          cp public/og.png _site/og.png
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
