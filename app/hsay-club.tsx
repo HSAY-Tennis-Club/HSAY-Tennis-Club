@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { sitePath } from "./site-path";
 
 type Player = {
   id: string;
@@ -257,14 +258,14 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <a href="#events" onClick={() => setMobileMenu(false)}>赛事</a>
           <a href="#ranking" onClick={() => setMobileMenu(false)}>排名</a>
           <a href="#players" onClick={() => setMobileMenu(false)}>球员</a>
-          <a href={surface === "mini" ? "/member?surface=mini" : "/member"} onClick={() => setMobileMenu(false)}>我的</a>
+          <a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")} onClick={() => setMobileMenu(false)}>我的</a>
         </nav>
         <div className="header-actions">
           <div className="surface-toggle" role="group" aria-label="切换 Web 或小程序模式">
             <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
             <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
           </div>
-          <a className="login-button" href={surface === "mini" ? "/member?surface=mini" : "/member"}>
+          <a className="login-button" href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>
             <span className="status-dot" />
             我的数据
           </a>
@@ -474,12 +475,12 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         <div className="metric-copy">
           <span className="section-kicker">MEMBER DATA</span><h2>你的球，不止输赢。</h2><p>会员数据舱展示个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
           <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>密友备注</li></ul>
-          <a className="primary-button light-button" href={surface === "mini" ? "/member?surface=mini" : "/member"}>进入我的数据舱 <span>→</span></a>
+          <a className="primary-button light-button" href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>进入我的数据舱 <span>→</span></a>
           <small>会员数据仅本人及获授权的俱乐部管理员可见</small>
         </div>
         <div className="metric-preview metric-lock-preview" aria-label="会员技术数据预览">
           <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>PRIVATE PROFILE</b><small>登录后查看个人比赛画像</small></span></div><span className="lock-pill">🔒 仅自己可见</span></div>
-          <div className="metric-lock-copy"><b>六维比赛画像已移入“我的”</b><p>进入我的数据舱，查看按实际数值渲染的雷达图、近期状态和密友备注。</p><a href={surface === "mini" ? "/member?surface=mini" : "/member"}>打开我的数据舱 →</a></div>
+          <div className="metric-lock-copy"><b>六维比赛画像已移入“我的”</b><p>进入我的数据舱，查看按实际数值渲染的雷达图、近期状态和密友备注。</p><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>打开我的数据舱 →</a></div>
         </div>
       </section>
 
@@ -500,7 +501,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
       </footer>
 
       <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
-        <a href={surface === "mini" ? "/?surface=mini#top" : "#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}><MiniIcon kind="profile" /><span>我的</span></a>
+        <a href={surface === "mini" ? sitePath("?surface=mini#top") : "#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : "#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : "#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : "#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );

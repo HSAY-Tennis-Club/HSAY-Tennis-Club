@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { sitePath } from "../site-path";
 
 const metrics = [
   { label: "正手", self: 8.8, peer: 8.2, delta: "+0.4" },
@@ -76,18 +77,18 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
   return (
     <main className={surface === "mini" ? "mini-surface member-shell member-mini-surface" : "member-shell"}>
       <header className="member-header">
-        <a className="brand" href="/"><span className="brand-mark">HSAY<i /></span><span className="brand-sub">MEMBER CLUBHOUSE</span></a>
+        <a className="brand" href={sitePath()}><span className="brand-mark">HSAY<i /></span><span className="brand-sub">MEMBER CLUBHOUSE</span></a>
         <div className="member-header-actions">
           <div className="surface-toggle" role="group" aria-label="切换 Web 或小程序模式">
             <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
             <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
           </div>
-          <span className="member-name">你好，{name}</span><a className="logout-link" href="/">退出预览</a>
+          <span className="member-name">你好，{name}</span><a className="logout-link" href={sitePath()}>退出预览</a>
         </div>
       </header>
       <div className="member-hero">
         <div><span className="section-kicker">PRIVATE PERFORMANCE LAB</span><h1>我的数据舱</h1><p>所有指标仅你本人和获授权的俱乐部管理员可见。</p></div>
-        <a className="back-link" href="/">← 返回公开首页</a>
+        <a className="back-link" href={sitePath()}>← 返回公开首页</a>
       </div>
       <section className="member-grid">
         <article className="member-profile panel">
@@ -144,7 +145,7 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
         <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人及获授权成员；密友备注：仅本人和被授权查看的密友；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
       </section>
       <nav className={`mobile-bottom-nav member-mobile-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="我的数据导航">
-        <a href={surface === "mini" ? "/?surface=mini#top" : "/#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? "/?surface=mini#events" : "/#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? "/?surface=mini#ranking" : "/#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? "/?surface=mini#players" : "/#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? "/member?surface=mini" : "/member"}><MiniIcon kind="profile" /><span>我的</span></a>
+        <a href={surface === "mini" ? sitePath("?surface=mini#top") : `${sitePath()}#top`}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : `${sitePath()}#events`}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : `${sitePath()}#ranking`}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : `${sitePath()}#players`}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );
