@@ -193,13 +193,14 @@ function Avatar({ player, size = "medium" }: { player: Player; size?: "small" | 
   return <span className={`avatar avatar-${size} avatar-${player.color}`} aria-hidden="true">{player.initial}</span>;
 }
 
-function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" }) {
+function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" | "h2h" }) {
   const paths = {
     home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z",
     calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2",
     rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z",
     players: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM6 8c4 1 8 1 12 0M6 16c4-1 8-1 12 0",
     profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0",
+    h2h: "M4 8h14m0 0-3-3m3 3-3 3M20 16H6m0 0 3-3m-3 3 3 3",
   } as const;
   return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
 }
@@ -218,6 +219,8 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
   const [rightId, setRightId] = useState("sven");
   const [leftIds, setLeftIds] = useState<string[]>(["yufan"]);
   const [rightIds, setRightIds] = useState<string[]>(["sven"]);
+  const [leftQuery, setLeftQuery] = useState("");
+  const [rightQuery, setRightQuery] = useState("");
   const [playerQuery, setPlayerQuery] = useState("");
   const [showAllPlayers, setShowAllPlayers] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -248,6 +251,34 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
     setRightId(leftId);
     setLeftIds(rightIds);
     setRightIds(leftIds);
+  };
+
+  const addH2HPlayer = (side: "left" | "right") => {
+    const query = (side === "left" ? leftQuery : rightQuery).trim().toLowerCase();
+    const selectedIds = side === "left" ? leftIds : rightIds;
+    const opponentIds = side === "left" ? rightIds : leftIds;
+    const player = players.find((item) => item.name.toLowerCase() === query || item.id === query) ?? players.find((item) => item.name.toLowerCase().includes(query));
+    if (!query || !player || selectedIds.includes(player.id) || opponentIds.includes(player.id) || selectedIds.length >= 4) return;
+    if (side === "left") {
+      setLeftIds((current) => [...current, player.id]);
+      setLeftQuery("");
+    } else {
+      setRightIds((current) => [...current, player.id]);
+      setRightQuery("");
+    }
+  };
+
+  const removeH2HPlayer = (side: "left" | "right", id: string) => {
+    const selectedIds = side === "left" ? leftIds : rightIds;
+    if (selectedIds.length <= 1) return;
+    const next = selectedIds.filter((item) => item !== id);
+    if (side === "left") {
+      setLeftIds(next);
+      if (leftId === id) setLeftId(next[0]);
+    } else {
+      setRightIds(next);
+      if (rightId === id) setRightId(next[0]);
+    }
   };
 
   return (
@@ -281,10 +312,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <div className="eyebrow"><span>SHANGHAI</span><b>·</b><span>150 PLAYERS</span><b>·</b><span>EST. 2024</span></div>
           <h1><span className="hero-line hero-line-top">场下宝贝，</span><span className="hero-line hero-line-bottom">场上撕飞。</span></h1>
           <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />每一场都是“真我演出”。</p>
-          <div className="hero-actions">
-            <a className="primary-button" href="#events">查看赛事安排 <span>↗</span></a>
-            <a className="text-button" href="#ranking">2026 赛季排名 <span>↓</span></a>
-          </div>
         </div>
 
         <div className="hero-card-wrap" aria-label="冠军女性杯决赛结果">
@@ -454,18 +481,18 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         </div>
         <div className="h2h-board">
           <div className="h2h-player left-player">
-            <label>左方 · {leftIds.length} 人</label>
-            <select value={leftId} onChange={(event) => { const id = event.target.value; setLeftId(id); setLeftIds((current) => [id, ...current.filter((item) => item !== id)].slice(0, 4)); }} aria-label="选择左方球员">{players.filter((player) => !rightIds.includes(player.id)).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
-            <div className="h2h-multi-picker" aria-label="追加左方球员"><small>左方可多选</small>{players.filter((player) => !rightIds.includes(player.id)).slice(0, 8).map((player) => <button key={player.id} className={leftIds.includes(player.id) ? "active" : ""} onClick={() => setLeftIds((current) => { if (!current.includes(player.id)) return current.length < 4 ? [...current, player.id] : current; if (current.length <= 1) return current; const next = current.filter((id) => id !== player.id); if (leftId === player.id) setLeftId(next[0]); return next; })}>{player.name}</button>)}</div>
-            <div className="h2h-multi-avatars">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-multi-avatar" key={player.id}><Avatar player={player} size="medium" /><small>{player.name}</small></div> : null; })}</div><h3>{leftIds.length > 1 ? `${left.name} 等` : left.name}</h3><span>2026 年度积分 #{left.rank}</span><strong className="h2h-wins">{leftWins}<small>胜</small></strong>
+            <label>左方</label>
+            <div className="h2h-search-row"><input list="left-player-options" value={leftQuery} onChange={(event) => setLeftQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("left"); }} placeholder="搜索球员" aria-label="搜索左方球员" /><button onClick={() => addH2HPlayer("left")} disabled={!leftQuery.trim()}>添加</button><datalist id="left-player-options">{players.filter((player) => !rightIds.includes(player.id) && !leftIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
+            <div className="h2h-selected-list" aria-label="已添加的左方球员">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><button onClick={() => removeH2HPlayer("left", player.id)} disabled={leftIds.length <= 1} aria-label={`删除左方${player.name}`}>×</button></div> : null; })}</div>
+            <h3>{leftIds.length > 1 ? `${left.name} 等` : left.name}</h3><span>2026 年度积分 #{left.rank}</span><strong className="h2h-wins">{leftWins}<small>胜</small></strong>
           </div>
           <button className="swap-button" onClick={swapPlayers} aria-label="交换两位球员">⇄</button>
           <div className="versus-mark">VS</div>
           <div className="h2h-player right-player">
-            <label>右方 · {rightIds.length} 人</label>
-            <select value={rightId} onChange={(event) => { setRightId(event.target.value); setRightIds((current) => current.includes(event.target.value) ? current : [event.target.value, ...current].slice(0, 4)); }} aria-label="选择右方球员">{players.filter((player) => !leftIds.includes(player.id)).map((player) => <option value={player.id} key={player.id}>{player.name}</option>)}</select>
-            <div className="h2h-multi-picker" aria-label="追加右方球员"><small>右方可多选</small>{players.filter((player) => !leftIds.includes(player.id)).slice(0, 8).map((player) => <button key={player.id} className={rightIds.includes(player.id) ? "active" : ""} onClick={() => setRightIds((current) => { if (!current.includes(player.id)) return current.length < 4 ? [...current, player.id] : current; if (current.length <= 1) return current; const next = current.filter((id) => id !== player.id); if (rightId === player.id) setRightId(next[0]); return next; })}>{player.name}</button>)}</div>
-            <div className="h2h-multi-avatars">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-multi-avatar" key={player.id}><Avatar player={player} size="medium" /><small>{player.name}</small></div> : null; })}</div><h3>{rightIds.length > 1 ? `${right.name} 等` : right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
+            <label>右方</label>
+            <div className="h2h-search-row"><input list="right-player-options" value={rightQuery} onChange={(event) => setRightQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("right"); }} placeholder="搜索球员" aria-label="搜索右方球员" /><button onClick={() => addH2HPlayer("right")} disabled={!rightQuery.trim()}>添加</button><datalist id="right-player-options">{players.filter((player) => !leftIds.includes(player.id) && !rightIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
+            <div className="h2h-selected-list" aria-label="已添加的右方球员">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><button onClick={() => removeH2HPlayer("right", player.id)} disabled={rightIds.length <= 1} aria-label={`删除右方${player.name}`}>×</button></div> : null; })}</div>
+            <h3>{rightIds.length > 1 ? `${right.name} 等` : right.name}</h3><span>2026 年度积分 #{right.rank}</span><strong className="h2h-wins">{rightWins}<small>胜</small></strong>
           </div>
           <div className="h2h-summary">
             <div><span>已登记交锋</span><strong>{leftWins + rightWins} 次</strong></div>
@@ -478,14 +505,17 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section metrics-section" id="membership">
         <div className="metric-copy">
-          <span className="section-kicker">MEMBER DATA</span><h2>你的球，不止输赢。</h2><p>会员数据舱展示个人比赛画像、实力、稳定、压制、调整力与韧性趋势，以及只对本人可见的训练建议。</p>
-          <ul><li><i>✓</i>逐场表现趋势</li><li><i>✓</i>比赛画像指标</li><li><i>✓</i>密友备注</li></ul>
-          <a className="primary-button light-button" href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>进入我的数据舱 <span>→</span></a>
-          <small>会员数据仅本人及获授权的俱乐部管理员可见</small>
+          <span className="section-kicker">MEMBER DATA</span><h2>我的数据舱</h2><p>把每一场比赛留下的线索，整理成只属于你的训练和比赛档案。</p>
+          <a className="primary-button light-button" href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>打开我的数据舱 <span>→</span></a>
+          <small>仅本人及获授权的俱乐部管理员可见</small>
         </div>
-        <div className="metric-preview metric-lock-preview" aria-label="会员技术数据预览">
-          <div className="metric-preview-head"><div><Avatar player={players[5]} /><span><b>PRIVATE PROFILE</b><small>登录后查看个人比赛画像</small></span></div><span className="lock-pill">🔒 仅自己可见</span></div>
-          <div className="metric-lock-copy"><b>六维比赛画像已移入“我的”</b><p>进入我的数据舱，查看按实际数值渲染的雷达图、近期状态和密友备注。</p><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>打开我的数据舱 →</a></div>
+        <div className="member-overview" aria-label="我的页面内容">
+          <article><b>01</b><strong>六维技术表现</strong><span>正手、反手、网前、截击、切削、发球</span></article>
+          <article><b>02</b><strong>六维比赛画像</strong><span>实力、压制、韧性、调整力、稳定、样本</span></article>
+          <article><b>03</b><strong>近期状态</strong><span>最近 10 / 20 场的胜负走势</span></article>
+          <article><b>04</b><strong>密友备注</strong><span>下一场训练和比赛提醒</span></article>
+          <article><b>05</b><strong>我的敌密</strong><span>最想约球、最想赢的对手</span></article>
+          <article><b>06</b><strong>NTRP 自评</strong><span>记录当前的个人级别和状态</span></article>
         </div>
       </section>
 
@@ -500,7 +530,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         <div className="home-about-rule">
           <span className="section-kicker">OUR COURT, OUR RULES</span>
           <p>每个人都有自己的上场方式。你可以为一分庆祝，也可以在下一球重新把气势打回来。</p>
-          <a className="text-button" href="#manifesto">读懂四个字母 <span>↓</span></a>
         </div>
       </section>
 
@@ -521,7 +550,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
       </footer>
 
       <nav className={`mobile-bottom-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="移动端导航">
-        <a href={surface === "mini" ? sitePath("?surface=mini#top") : "#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : "#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : "#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : "#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
+        <a href={surface === "mini" ? sitePath("?surface=mini#top") : "#top"}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : "#events"}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : "#ranking"}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : "#players"}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("?surface=mini#h2h") : "#h2h"}><MiniIcon kind="h2h" /><span>H2H</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );

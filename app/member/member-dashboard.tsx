@@ -39,6 +39,35 @@ const recentMatches = [
   { result: "W", opponent: "Ivan", type: "双打", score: "15–12", date: "04.26" },
 ] as const;
 
+type MemberPlayer = { name: string; initial: string; rank: number; matches: number; titles: number; color: string };
+
+const memberPlayers: Record<string, MemberPlayer> = {
+  chuanlin: { name: "川林贯空", initial: "川", rank: 1, matches: 105, titles: 0, color: "#8162ff" },
+  yufan: { name: "宇凡", initial: "宇", rank: 2, matches: 58, titles: 7, color: "#c9ff32" },
+  connor: { name: "Connor", initial: "C", rank: 3, matches: 24, titles: 0, color: "#ff9d2f" },
+  peter: { name: "PETER", initial: "P", rank: 4, matches: 57, titles: 8, color: "#c9ff32" },
+  desert: { name: "沙漠", initial: "沙", rank: 5, matches: 107, titles: 6, color: "#ff78bc" },
+  loker: { name: "Loker", initial: "L", rank: 6, matches: 123, titles: 14, color: "#5ca9ff" },
+  louie: { name: "Louie", initial: "L", rank: 7, matches: 27, titles: 0, color: "#8162ff" },
+  cy: { name: "CY", initial: "C", rank: 8, matches: 31, titles: 0, color: "#c9ff32" },
+  carlos: { name: "Carlos", initial: "C", rank: 9, matches: 24, titles: 0, color: "#ff9d2f" },
+  johan: { name: "Johan", initial: "J", rank: 10, matches: 24, titles: 0, color: "#68d8e8" },
+  tiger: { name: "虎", initial: "虎", rank: 11, matches: 28, titles: 0, color: "#ff78bc" },
+  adam: { name: "Adam", initial: "A", rank: 12, matches: 32, titles: 0, color: "#5ca9ff" },
+  andrew: { name: "Andrew", initial: "A", rank: 13, matches: 49, titles: 0, color: "#8162ff" },
+  daodao: { name: "刀刀", initial: "刀", rank: 14, matches: 140, titles: 7, color: "#c9ff32" },
+  zhuzhu: { name: "猪猪", initial: "猪", rank: 15, matches: 55, titles: 7, color: "#ff9d2f" },
+  xiaosha: { name: "小沙", initial: "小", rank: 16, matches: 69, titles: 7, color: "#68d8e8" },
+  ethan: { name: "Ethan", initial: "E", rank: 17, matches: 44, titles: 0, color: "#ff78bc" },
+  yaoyi: { name: "耀一", initial: "耀", rank: 18, matches: 39, titles: 0, color: "#5ca9ff" },
+  max: { name: "Max", initial: "M", rank: 19, matches: 25, titles: 0, color: "#8162ff" },
+  heijialu: { name: "黑加鲁", initial: "黑", rank: 20, matches: 30, titles: 0, color: "#c9ff32" },
+  doctorfu: { name: "傅医生", initial: "傅", rank: 23, matches: 151, titles: 7, color: "#ff9d2f" },
+  sven: { name: "Sven", initial: "S", rank: 24, matches: 29, titles: 0, color: "#68d8e8" },
+  stefan: { name: "Stefan", initial: "S", rank: 24, matches: 24, titles: 0, color: "#ff78bc" },
+  brian: { name: "Brian", initial: "B", rank: 26, matches: 24, titles: 0, color: "#5ca9ff" },
+};
+
 const bestieCandidates = ["宇凡", "Loker", "CY", "Andrew", "刀刀", "小沙", "猪猪", "Max"];
 const relationshipMasters = [{ name: "宇凡", losses: 6 }, { name: "Loker", losses: 4 }, { name: "刀刀", losses: 3 }];
 const relationshipServants = [{ name: "CY", wins: 7 }, { name: "猪猪", wins: 5 }, { name: "Andrew", wins: 3 }];
@@ -52,28 +81,54 @@ function radarPolygon(values: number[]) {
   }).join(", ")})`;
 }
 
-function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" }) {
+function MiniIcon({ kind }: { kind: "home" | "calendar" | "rank" | "players" | "profile" | "h2h" }) {
   const paths = { home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z", calendar: "M5 4v3M19 4v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1zM8 12h2M14 12h2M8 16h2", rank: "M4 19h4V9H4v10zM10 19h4V4h-4v15zM16 19h4v-7h-4v7z", players: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM6 8c4 1 8 1 12 0M6 16c4-1 8-1 12 0", profile: "M12 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM5 21a7 7 0 0 1 14 0" } as const;
-  return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={paths[kind]} /></svg>;
+  const iconPath = kind === "h2h" ? "M4 8h14m0 0-3-3m3 3-3 3M20 16H6m0 0 3-3m-3 3 3 3" : paths[kind as Exclude<typeof kind, "h2h">];
+  return <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={iconPath} /></svg>;
 }
 
-export function MemberDashboard({ displayName, initialSurface = "web" }: { displayName: string; initialSurface?: "web" | "mini" }) {
-  const name = displayName.split("@")[0];
+export function MemberDashboard({ displayName, initialSurface = "web", initialPlayerId = "peter" }: { displayName: string; initialSurface?: "web" | "mini"; initialPlayerId?: string }) {
+  const currentPlayer = memberPlayers[initialPlayerId] ?? memberPlayers.peter;
+  const name = currentPlayer.name || displayName.split("@")[0];
   const [surface, setSurface] = useState<"web" | "mini">(initialSurface);
   const [metricMode, setMetricMode] = useState<"self" | "peer">("self");
   const [formWindow, setFormWindow] = useState<10 | 20>(10);
   const [besties, setBesties] = useState<string[]>(["宇凡", "CY"]);
+  const [bestieQuery, setBestieQuery] = useState("");
   const [wishSent, setWishSent] = useState(false);
   const [ntrp, setNtrp] = useState("3.5");
 
-  const visibleMetrics = metrics.map((metric) => ({ ...metric, score: metricMode === "self" ? metric.self : metric.peer }));
-  const visibleMatches = recentMatches.slice(0, formWindow);
+  const profileBoost = Math.max(-0.8, Math.min(0.8, (12 - currentPlayer.rank) / 12));
+  const playerMetrics = metrics.map((metric) => ({ ...metric, self: Math.max(5, Math.min(9.9, metric.self + profileBoost)), peer: Math.max(5, Math.min(9.9, metric.peer + profileBoost * 0.7)) }));
+  const playerMatches = recentMatches.map((match, index) => ({ ...match, opponent: match.opponent === currentPlayer.name ? "对手" : match.opponent, result: initialPlayerId === "peter" ? match.result : (index % 5 === currentPlayer.rank % 5 || index === 3 ? "L" : "W") }));
+  const visibleMetrics = playerMetrics.map((metric) => ({ ...metric, score: metricMode === "self" ? metric.self : metric.peer }));
+  const visibleMatches = playerMatches.slice(0, formWindow);
   const formWins = visibleMatches.filter((match) => match.result === "W").length;
+
+  const addBestie = () => {
+    const query = bestieQuery.trim().toLowerCase();
+    const candidate = bestieCandidates.find((item) => item.toLowerCase() === query) ?? bestieCandidates.find((item) => item.toLowerCase().includes(query));
+    if (!query || !candidate || besties.includes(candidate) || besties.length >= 5) return;
+    setBesties((current) => [...current, candidate]);
+    setBestieQuery("");
+  };
 
   useEffect(() => {
     const querySurface = new URLSearchParams(window.location.search).get("surface");
     if (querySurface === "mini" || (!querySurface && window.matchMedia("(max-width: 720px), (orientation: portrait) and (max-width: 1024px)").matches)) setSurface("mini");
   }, []);
+
+  useEffect(() => {
+    if (surface !== "mini") return;
+    const main = document.querySelector<HTMLElement>(".member-mini-surface");
+    if (!main) return;
+    main.style.scrollBehavior = "auto";
+    main.scrollTop = 0;
+    requestAnimationFrame(() => {
+      main.scrollTop = 0;
+      main.style.removeProperty("scroll-behavior");
+    });
+  }, [surface]);
 
   return (
     <main className={surface === "mini" ? "mini-surface member-shell member-mini-surface" : "member-shell"}>
@@ -93,8 +148,8 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
       </div>
       <section className="member-grid">
         <article className="member-profile panel">
-          <div className="member-avatar">P</div><span className="rank-chip">年度积分 #04</span><h2>PETER</h2><p>57 场已登记比赛 · 8 冠</p>
-          <div className="member-stats"><div><strong>17–10</strong><span>单打战绩</span></div><div><strong>24–6</strong><span>双打战绩</span></div><div><strong>72%</strong><span>总胜率</span></div></div>
+          <div className="member-avatar" style={{ background: currentPlayer.color }}>{currentPlayer.initial}</div><span className="rank-chip">年度积分 #{String(currentPlayer.rank).padStart(2, "0")}</span><h2>{currentPlayer.name}</h2><p>{currentPlayer.matches} 场已登记比赛 · {currentPlayer.titles} 冠</p>
+          <div className="member-stats"><div><strong>{Math.max(8, Math.round(currentPlayer.matches * 0.31))}–{Math.max(3, Math.round(currentPlayer.matches * 0.16))}</strong><span>单打战绩</span></div><div><strong>{Math.max(10, Math.round(currentPlayer.matches * 0.43))}–{Math.max(2, Math.round(currentPlayer.matches * 0.11))}</strong><span>双打战绩</span></div><div><strong>{Math.round((formWins / Math.max(1, visibleMatches.length)) * 100)}%</strong><span>总胜率</span></div></div>
         </article>
         <article className="performance-panel panel">
           <div className="panel-title"><div><span className="section-kicker">TECHNICAL DIMENSIONS</span><h2>六维技术表现</h2></div><span className="private-chip">🔒 仅自己可见</span></div>
@@ -128,7 +183,11 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
         <article className="panel bestie-panel">
           <div className="panel-title"><div><span className="section-kicker">MY ENEMY·BESTIE</span><h2>我的敌密</h2></div><span className="private-chip">最多 5 位</span></div>
           <p className="bestie-intro">选出最想约球、最想赢、也最懂你戏剧张力的密友。许愿成功后，解锁一枚专属胜利徽章，并在下一场赛果卡留下彩蛋。</p>
-          <div className="bestie-picker">{bestieCandidates.map((candidate) => <button key={candidate} className={besties.includes(candidate) ? "selected" : ""} onClick={() => setBesties((current) => current.includes(candidate) ? current.filter((item) => item !== candidate) : current.length < 5 ? [...current, candidate] : current)} aria-pressed={besties.includes(candidate)}>{candidate}{besties.includes(candidate) ? " ✓" : ""}</button>)}</div>
+          <div className="bestie-selector">
+            <label>敌密 · {besties.length} 人</label>
+            <div className="bestie-search-row"><input list="bestie-player-options" value={bestieQuery} onChange={(event) => setBestieQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addBestie(); }} placeholder="搜索球员" aria-label="搜索敌密" /><button onClick={addBestie} disabled={!bestieQuery.trim() || besties.length >= 5}>添加</button><datalist id="bestie-player-options">{bestieCandidates.filter((candidate) => !besties.includes(candidate)).map((candidate) => <option value={candidate} key={candidate} />)}</datalist></div>
+            <div className="bestie-selected-list" aria-label="已添加的敌密">{besties.map((candidate) => <div className="bestie-selected-person" key={candidate}><span>{candidate}</span><button onClick={() => setBesties((current) => current.filter((item) => item !== candidate))} aria-label={`删除敌密${candidate}`}>×</button></div>)}</div>
+          </div>
           <div className="bestie-footer"><span>{besties.length}/5 已选</span><button className={`wish-button ${wishSent ? "wished" : ""}`} onClick={() => setWishSent(true)} disabled={!besties.length}>{wishSent ? "愿望已点亮 ✦" : "许愿胜利"}</button></div>
           {wishSent && <div className="wish-reward">胜利后获得：<b>敌密胜利徽章</b>、一条赛果彩蛋，以及下一场训练建议优先解锁。</div>}
         </article>
@@ -146,7 +205,7 @@ export function MemberDashboard({ displayName, initialSurface = "web" }: { displ
         <article className="panel privacy-panel"><div className="privacy-icon">⌾</div><div><span className="section-kicker">PRIVACY</span><h2>谁能看到这些？</h2><p>详细技术数据：仅本人及获授权成员；密友备注：仅本人和被授权查看的密友；公开主页只显示赛季积分、排名、参赛记录与公开胜率。</p></div></article>
       </section>
       <nav className={`mobile-bottom-nav member-mobile-nav ${surface === "mini" ? "mini-nav-active" : ""}`} aria-label="我的数据导航">
-        <a href={surface === "mini" ? sitePath("?surface=mini#top") : `${sitePath()}#top`}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : `${sitePath()}#events`}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : `${sitePath()}#ranking`}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : `${sitePath()}#players`}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
+        <a href={surface === "mini" ? sitePath("?surface=mini#top") : `${sitePath()}#top`}><MiniIcon kind="home" /><span>首页</span></a><a href={surface === "mini" ? sitePath("?surface=mini#events") : `${sitePath()}#events`}><MiniIcon kind="calendar" /><span>赛事</span></a><a href={surface === "mini" ? sitePath("?surface=mini#ranking") : `${sitePath()}#ranking`}><MiniIcon kind="rank" /><span>排名</span></a><a href={surface === "mini" ? sitePath("?surface=mini#players") : `${sitePath()}#players`}><MiniIcon kind="players" /><span>球员</span></a><a href={surface === "mini" ? sitePath("?surface=mini#h2h") : `${sitePath()}#h2h`}><MiniIcon kind="h2h" /><span>H2H</span></a><a href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}><MiniIcon kind="profile" /><span>我的</span></a>
       </nav>
     </main>
   );

@@ -552,6 +552,15 @@ footer{min-height:280px;padding-top:44px}
   .about-belief{padding-top:48px;padding-bottom:54px}
   .about-belief h2{font-size:44px}
 }
+
+@media (max-width:900px){
+  .home-about-intro{display:block;grid-template-columns:none}
+  .home-about-intro h2{width:max-content;max-width:100%;word-break:keep-all;overflow-wrap:normal}
+  .home-about-intro>p{margin-top:18px}
+  .home-about-rule{display:block;grid-template-columns:none}
+  .home-about-rule .section-kicker{display:block;white-space:nowrap}
+  .home-about-rule p{margin:17px 0 22px}
+}
 .member-mini-surface{scroll-snap-type:none;scroll-behavior:auto}
 
 /* Use the same primary-player plus multi-select treatment on every selector. */
@@ -573,3 +582,52 @@ footer{min-height:280px;padding-top:44px}
 .member-mini-surface .bestie-selector{margin:16px 0}
 .member-mini-surface .bestie-multi-picker{gap:5px;margin-top:16px}
 .member-mini-surface .bestie-multi-picker button{padding:7px 9px;font-size:9px}
+
+/* Search first, then add people into a removable selected list. */
+.h2h-search-row,.bestie-search-row{display:flex;align-items:center;gap:6px;width:min(100%,220px);margin:0 auto 14px}
+.h2h-search-row input,.bestie-search-row input{min-width:0;flex:1;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:7px 4px;font-size:11px;outline:0}
+.h2h-search-row input::placeholder,.bestie-search-row input::placeholder{color:#999}
+.h2h-search-row button,.bestie-search-row button{border:1px solid var(--ink);background:var(--ink);color:var(--lime);border-radius:999px;padding:7px 11px;font-size:9px;font-weight:800;cursor:pointer}
+.h2h-search-row button:disabled,.bestie-search-row button:disabled{opacity:.3;cursor:not-allowed}
+.h2h-selected-list,.bestie-selected-list{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;width:min(100%,240px);margin:0 auto 16px}
+.h2h-selected-person,.bestie-selected-person{display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--white);border-radius:999px;padding:4px 5px 4px 7px;font-size:9px}
+.h2h-selected-person .avatar{width:24px;height:24px;font-size:10px}
+.h2h-selected-person button,.bestie-selected-person button{display:grid;place-items:center;width:17px;height:17px;border:0;border-radius:50%;background:#e9e5dd;color:#777;font-size:12px;line-height:1;cursor:pointer}
+.h2h-selected-person button:disabled{opacity:.35;cursor:not-allowed}
+.bestie-search-row{width:min(100%,420px);margin-top:22px}
+.bestie-selected-list{width:100%;max-width:680px;margin-top:0;margin-bottom:18px}
+.bestie-selected-person{padding:8px 8px 8px 13px;font-size:10px;font-weight:750}
+.bestie-selected-person button{width:19px;height:19px}
+.member-mini-surface .h2h-search-row,.member-mini-surface .bestie-search-row{width:min(100%,220px)}
+.member-mini-surface .h2h-search-row input,.member-mini-surface .bestie-search-row input{font-size:10px}
+.member-mini-surface .h2h-selected-list{max-width:210px}
+.member-mini-surface .bestie-search-row{margin-top:16px}
+.member-mini-surface .bestie-selected-person{font-size:9px;padding:7px 7px 7px 10px}
+.mobile-bottom-nav.mini-nav-active{grid-template-columns:repeat(6,1fr)}
+
+/* Lightweight home summary for the private member area. */
+.metrics-section{background:var(--paper);color:var(--ink);grid-template-columns:.72fr 1.28fr;gap:7vw}
+.metrics-section .metric-copy h2{font-size:clamp(34px,4vw,58px);margin:12px 0 18px}
+.metrics-section .metric-copy>p{max-width:360px;color:#666;font-size:12px;line-height:1.75}
+.metrics-section .metric-copy>small{color:#888;font-size:9px}
+.metrics-section .light-button{background:var(--ink);color:var(--lime);box-shadow:6px 6px 0 var(--lime);margin-top:22px}
+.member-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.member-overview article{min-height:104px;padding:17px 15px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.member-overview article:nth-child(3n){border-right:0}
+.member-overview b{display:block;color:var(--coral);font:800 9px/1 var(--font-geist-mono);letter-spacing:.12em;margin-bottom:15px}
+.member-overview strong{display:block;font-size:13px;line-height:1.2}
+.member-overview span{display:block;margin-top:7px;color:#777;font-size:10px;line-height:1.45}
+.home-about-rule{grid-template-columns:.85fr 1fr}
+
+@media (max-width:720px){
+  .metrics-section .metric-copy{text-align:left}
+  .metrics-section .metric-copy h2{font-size:38px}
+  .metrics-section .metric-copy>p{font-size:11px}
+  .metrics-section .light-button{margin-top:18px}
+  .member-overview{grid-template-columns:1fr 1fr;gap:0 14px}
+  .member-overview article{min-height:94px;padding:15px 0 13px;border-right:0}
+  .member-overview article:nth-child(3n){border-right:0}
+  .member-overview b{margin-bottom:12px}
+  .member-overview strong{font-size:12px}
+  .member-overview span{font-size:9px}
+}
