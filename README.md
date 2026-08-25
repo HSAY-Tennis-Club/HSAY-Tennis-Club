@@ -10,7 +10,13 @@ HSAY（Hit · Spin · Ace & You）俱乐部的网站原型，包含赛事日历�
 npm install
 npm run dev
 npm run build
+npm run build:static
 ```
+
+`npm run dev` 和 `npm run build` 用于本地的 vinext/Worker 运行时；
+`npm run build:static` 用于生成 GitHub Pages 使用的静态资源。GitHub Pages
+由 `.github/workflows/pages.yml` 自动发布仓库中的 `index.html`、`member/`
+和 `assets/`，本项目不再使用 ChatGPT Sites 托管。
 
 ## 当前版本
 
