@@ -31,13 +31,13 @@ export default function AboutPage() {
       <section className="about-hero">
         <div className="about-hero-copy">
           <span className="section-kicker">ABOUT HSAY / SHANGHAI</span>
-          <h1><span>场下宝贝，</span><em>场上撕飞。</em></h1>
+          <h1><span>ABOUT</span><em>HSAY.</em></h1>
           <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />每一场都是“真我演出”。</p>
         </div>
         <div className="about-hero-note">
-          <span className="about-note-mark">OUR COURT / SHANGHAI</span>
+          <span className="about-note-mark">HSAY PRINCIPLE</span>
           <p>认真打球，尽兴生活。<br />每个人都有自己的上场方式。</p>
-          <a className="text-button" href="#belief">了解我们的球场 <span>↓</span></a>
+          <a className="text-button" href="#belief">继续了解 HSAY <span>↓</span></a>
         </div>
       </section>
 
