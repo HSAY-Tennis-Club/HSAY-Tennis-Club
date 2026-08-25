@@ -446,9 +446,9 @@ footer{min-height:280px;padding-top:44px}
 
 /* Keep the main display titles aligned with the footer slogan at every size. */
 :root{--footer-slogan-size:clamp(32px,4vw,58px)}
-.section-head h2,.event-detail-intro h2,.metric-copy h2{font-size:var(--footer-slogan-size)}
+.section-head h2,.event-detail-intro h2,.metric-copy h2,.manifesto>h2{font-size:var(--footer-slogan-size)}
 .mini-surface{--footer-slogan-size:24px}
-.mini-surface .section-head h2,.mini-surface .event-detail-intro h2,.mini-surface .metric-copy h2{font-size:var(--footer-slogan-size)}
+.mini-surface .section-head h2,.mini-surface .event-detail-intro h2,.mini-surface .metric-copy h2,.mini-surface .manifesto>h2{font-size:var(--footer-slogan-size)}
 
 /* Brand lock-up and mini-program status: compact, legible, and intentionally graphic. */
 .hero h1{display:flex;flex-direction:column;align-items:flex-start;gap:2px;letter-spacing:-.09em}
