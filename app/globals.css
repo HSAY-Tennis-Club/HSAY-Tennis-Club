@@ -453,11 +453,12 @@ footer{min-height:280px;padding-top:44px}
 /* About page: the club code and its identity tags live in one focused story. */
 .about-page{min-height:100vh;background:var(--paper)}
 .about-header nav a[aria-current="page"]{color:var(--coral)}
-.about-hero{min-height:calc(100vh - 78px);padding:11vh 6vw 9vh;display:grid;grid-template-columns:1.2fr .8fr;align-items:end;gap:8vw;background:radial-gradient(circle at 78% 18%,rgba(130,99,255,.18),transparent 25%),var(--paper)}
+.about-hero{min-height:auto;padding:clamp(78px,11vh,140px) 6vw 105px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:8vw;background:radial-gradient(circle at 78% 18%,rgba(130,99,255,.18),transparent 25%),var(--paper)}
 .about-hero-copy h1{font-size:clamp(64px,10vw,150px);line-height:.82;letter-spacing:-.095em;margin:24px 0 34px;font-weight:950}
+.about-hero-copy h1 span,.about-hero-copy h1 em{display:block}
 .about-hero-copy h1 em{font-style:normal;color:var(--violet)}
 .about-hero-copy>p{font-size:clamp(16px,1.5vw,22px);line-height:1.7;color:#4d4a45;margin:0}
-.about-hero-note{max-width:310px;justify-self:end;padding:28px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.about-hero-note{max-width:360px;justify-self:end;padding:34px 32px;background:var(--lime);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--ink)}
 .about-note-mark{font:900 12px/1 var(--font-geist-mono);letter-spacing:.2em;color:var(--coral)}
 .about-hero-note p{font-size:24px;line-height:1.2;letter-spacing:-.05em;margin:24px 0 35px;font-weight:850}
 .about-hero-note .text-button{font-size:11px}
@@ -466,7 +467,7 @@ footer{min-height:280px;padding-top:44px}
 .about-code-heading h2{font-size:clamp(50px,6.5vw,100px);line-height:.9;letter-spacing:-.075em;margin:17px 0 0;font-weight:950}
 .about-code-heading>p{max-width:300px;font-size:12px;line-height:1.8;color:#777;margin:0 0 7px}
 .about-letter-grid{margin:0}
-.about-belief{padding:130px 6vw;background:var(--violet);color:#fff;display:grid;grid-template-columns:1fr .8fr;gap:7vw;align-items:end}
+.about-belief{padding:105px 6vw 115px;background:var(--violet);color:#fff;display:grid;grid-template-columns:1fr .8fr;gap:7vw;align-items:end}
 .about-belief h2{font-size:clamp(50px,6.5vw,100px);line-height:.88;letter-spacing:-.075em;margin:18px 0 0;font-weight:950}
 .about-belief h2 em{font-style:normal;color:var(--lime)}
 .about-belief>p{max-width:390px;margin:0 0 8px;color:#e2ddff;font-size:14px;line-height:1.9}
@@ -478,7 +479,7 @@ footer{min-height:280px;padding-top:44px}
 .about-page footer{margin-top:0}
 @media (max-width:720px){
   .about-header{height:64px;padding:0 18px}.about-header nav{display:none}.about-header .login-button{min-height:36px;padding:0 12px;font-size:10px}
-  .about-hero{min-height:calc(100vh - 64px);padding:58px 20px 55px;display:block}.about-hero-copy h1{font-size:61px;line-height:.85;margin:22px 0 24px}.about-hero-copy>p{font-size:14px;line-height:1.7}.about-hero-note{max-width:none;margin-top:62px;padding:20px 0}.about-hero-note p{font-size:22px;margin:19px 0 26px}
+  .about-hero{min-height:auto;padding:58px 20px 66px;display:block}.about-hero-copy h1{font-size:61px;line-height:.85;margin:22px 0 24px}.about-hero-copy>p{font-size:14px;line-height:1.7}.about-hero-note{max-width:none;margin-top:48px;padding:25px 22px;box-shadow:7px 7px 0 var(--ink)}.about-hero-note p{font-size:22px;margin:19px 0 26px}
   .about-code{padding:65px 20px 70px}.about-code-heading{display:block;margin-bottom:34px}.about-code-heading h2{font-size:52px;margin-top:14px}.about-code-heading>p{margin-top:25px;font-size:11px}.about-letter-grid{grid-template-columns:1fr 1fr}.about-letter-grid article{min-height:245px;padding:20px 15px}.about-letter-grid h3{font-size:23px;margin:47px 0 5px}.about-letter-grid article>b{font-size:110px;right:-10px;top:-12px}.about-letter-grid span{left:15px;right:15px;bottom:16px;font-size:9px;line-height:1.55}
   .about-belief{padding:70px 20px 75px;display:block}.about-belief h2{font-size:53px;margin-top:17px}.about-belief>p{margin-top:35px;font-size:12px;line-height:1.8}
   .about-tag-line{min-height:78px;padding:18px 14px;gap:10px;font-size:9px;letter-spacing:.1em;white-space:nowrap}.about-tag-line b{font-size:13px}.about-stat-line{grid-template-columns:1fr 1fr;padding:20px 15px;gap:18px 10px}.about-stat-line>i{display:none}.about-stat-line>div{justify-content:flex-start;gap:8px}.about-stat-line strong{font-size:26px}.about-stat-line span{font-size:9px}.about-page footer{min-height:300px}
@@ -509,3 +510,14 @@ footer{min-height:280px;padding-top:44px}
 .mini-surface .section-head{margin-bottom:14px}
 .mini-surface .section-head p{margin-top:6px}
 .mini-surface .ranking-section{padding-top:16px}
+
+/* Keep the member dashboard intro on the same title scale as the public
+   section heads, while restoring the intro in the mini-program surface. */
+.member-hero{padding:28px 6vw 24px;align-items:flex-start}
+.member-hero h1{font-size:var(--footer-slogan-size);line-height:.92;margin:6px 0 0}
+.member-hero p{font-size:12px;line-height:1.5;margin:10px 0 0}
+.member-mini-surface .member-hero{display:block;padding:20px 16px 14px}
+.member-mini-surface .member-hero h1{font-size:var(--footer-slogan-size);margin:6px 0 0}
+.member-mini-surface .member-hero p{font-size:10px;line-height:1.5;margin:8px 0 0}
+.member-mini-surface .member-hero .back-link{display:none}
+.member-mini-surface{scroll-snap-type:none;scroll-behavior:auto}

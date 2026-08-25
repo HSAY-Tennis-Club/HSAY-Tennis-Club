@@ -31,14 +31,20 @@ export default function AboutPage() {
       <section className="about-hero">
         <div className="about-hero-copy">
           <span className="section-kicker">ABOUT HSAY / SHANGHAI</span>
-          <h1>THE HSAY<br /><em>CODE.</em></h1>
+          <h1><span>场下宝贝，</span><em>场上撕飞。</em></h1>
           <p>扎根上海的实力派网球社群。查赛程、看赛果、追排名，<br className="desktop-only" />每一场都是“真我演出”。</p>
         </div>
         <div className="about-hero-note">
-          <span className="about-note-mark">H·S·A·Y</span>
-          <p>不是一套标准答案，<br />是一群人一起打出来的暗号。</p>
-          <a className="text-button" href="#code">读懂这四个字母 <span>↓</span></a>
+          <span className="about-note-mark">OUR COURT / SHANGHAI</span>
+          <p>认真打球，尽兴生活。<br />每个人都有自己的上场方式。</p>
+          <a className="text-button" href="#belief">了解我们的球场 <span>↓</span></a>
         </div>
+      </section>
+
+      <section className="about-belief" id="belief">
+        <span className="section-kicker">OUR COURT, OUR RULES</span>
+        <h2><span>场下宝贝，</span><br /><em>场上撕飞。</em></h2>
+        <p>你可以为一分庆祝，为一次失误懊恼，也可以在下一球重新把气势打回来。HSAY 让每一次挥拍都有同伴，让每一场比赛都值得被记住。</p>
       </section>
 
       <section className="about-code" id="code">
@@ -59,12 +65,6 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="about-belief">
-        <span className="section-kicker">OUR COURT, OUR RULES</span>
-        <h2>场下是宝贝，<br /><em>场上撕得飞。</em></h2>
-        <p>你可以为一分庆祝，为一次失误懊恼，也可以在下一球重新把气势打回来。HSAY 让每一次挥拍都有同伴，让每一场比赛都值得被记住。</p>
       </section>
 
       <section className="about-tags" aria-label="HSAY 标签">
