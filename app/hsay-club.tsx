@@ -300,10 +300,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
             <button className={surface === "web" ? "active" : ""} onClick={() => setSurface("web")} aria-pressed={surface === "web"}>Web</button>
             <button className={surface === "mini" ? "active" : ""} onClick={() => setSurface("mini")} aria-pressed={surface === "mini"}>小程序</button>
           </div>
-          <a className="login-button" href={surface === "mini" ? sitePath("member?surface=mini") : sitePath("member")}>
-            <span className="status-dot" />
-            我的数据
-          </a>
           <button className="menu-button" onClick={() => setMobileMenu(!mobileMenu)} aria-label="展开导航" aria-expanded={mobileMenu}>☰</button>
         </div>
       </header>
@@ -407,7 +403,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section ranking-section" id="ranking">
         <div className="section-head inverse-head">
-          <div><span className="section-kicker">2026 SEASON RANKING</span><h2>排名</h2><p>年度荣誉、单打实力与双打实力分开呈现。</p></div>
+          <div><span className="section-kicker">RANKING</span><h2>排名</h2><p>年度荣誉、单打实力与双打实力分开呈现。</p></div>
           <div className="ranking-controls">
             <div className="level-filter" role="group" aria-label="选择排名类型">
               <button className={rankingMode === "annual" ? "active" : ""} onClick={() => setRankingMode("annual")}>年度积分</button>
@@ -481,7 +477,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
         </div>
         <div className="h2h-board">
           <div className="h2h-player left-player">
-            <label>左方</label>
             <div className="h2h-search-row"><input list="left-player-options" value={leftQuery} onChange={(event) => setLeftQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("left"); }} placeholder="搜索球员" aria-label="搜索左方球员" /><button onClick={() => addH2HPlayer("left")} disabled={!leftQuery.trim()}>添加</button><datalist id="left-player-options">{players.filter((player) => !rightIds.includes(player.id) && !leftIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
             <div className="h2h-selected-list" aria-label="已添加的左方球员">{leftIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><strong>{player.name}</strong><button onClick={() => removeH2HPlayer("left", player.id)} disabled={leftIds.length <= 1} aria-label={`删除左方${player.name}`}>×</button></div> : null; })}</div>
             <strong className="h2h-wins">{leftWins}<small>胜</small></strong>
@@ -489,7 +484,6 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
           <button className="swap-button" onClick={swapPlayers} aria-label="交换两位球员">⇄</button>
           <div className="versus-mark">VS</div>
           <div className="h2h-player right-player">
-            <label>右方</label>
             <div className="h2h-search-row"><input list="right-player-options" value={rightQuery} onChange={(event) => setRightQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addH2HPlayer("right"); }} placeholder="搜索球员" aria-label="搜索右方球员" /><button onClick={() => addH2HPlayer("right")} disabled={!rightQuery.trim()}>添加</button><datalist id="right-player-options">{players.filter((player) => !leftIds.includes(player.id) && !rightIds.includes(player.id)).map((player) => <option value={player.name} key={player.id} />)}</datalist></div>
             <div className="h2h-selected-list" aria-label="已添加的右方球员">{rightIds.map((id) => { const player = players.find((item) => item.id === id); return player ? <div className="h2h-selected-person" key={player.id}><Avatar player={player} size="medium" /><strong>{player.name}</strong><button onClick={() => removeH2HPlayer("right", player.id)} disabled={rightIds.length <= 1} aria-label={`删除右方${player.name}`}>×</button></div> : null; })}</div>
             <strong className="h2h-wins">{rightWins}<small>胜</small></strong>
