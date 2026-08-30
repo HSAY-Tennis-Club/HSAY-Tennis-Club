@@ -640,6 +640,11 @@ footer{min-height:280px;padding-top:44px}
 /* Put the season selector above the ranking heading in the mini-program view. */
 .mini-surface .ranking-section .ranking-controls{display:contents}
 .mini-surface .ranking-section .year-select{order:-1;align-self:flex-end;margin-bottom:8px}
+.ranking-heading{display:flex;align-items:flex-end;justify-content:space-between;width:100%;min-width:0}
+.ranking-heading .year-select{flex:0 0 auto;margin-left:18px}
+.mini-surface .ranking-section .ranking-controls{display:flex}
+.ranking-section .ranking-note{display:flex;align-items:center;gap:12px}
+.ranking-section .ranking-note .elo-window-toggle{margin-left:auto;margin-top:0;flex:0 0 auto}
 
 @media (max-width:720px){
   .metrics-section .metric-copy{text-align:left}

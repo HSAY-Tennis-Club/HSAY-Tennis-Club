@@ -403,14 +403,13 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
       <section className="section ranking-section" id="ranking">
         <div className="section-head inverse-head">
-          <div><span className="section-kicker">RANKING</span><h2>排名</h2><p>年度荣誉、单打实力与双打实力分开呈现。</p></div>
+          <div className="ranking-heading"><div><span className="section-kicker">RANKING</span><h2>排名</h2></div><span className="year-select">2026⌄</span></div>
           <div className="ranking-controls">
             <div className="level-filter" role="group" aria-label="选择排名类型">
               <button className={rankingMode === "annual" ? "active" : ""} onClick={() => setRankingMode("annual")}>年度积分</button>
               <button className={rankingMode === "singles" ? "active" : ""} onClick={() => setRankingMode("singles")}>单打实力</button>
               <button className={rankingMode === "doubles" ? "active" : ""} onClick={() => setRankingMode("doubles")}>双打实力</button>
             </div>
-            <span className="year-select">2026⌄</span>
           </div>
         </div>
 
@@ -438,7 +437,7 @@ export function HSAYClub({ initialSurface = "web" }: { initialSurface?: "web" | 
 
         {rankingMode !== "annual" && (
           <div className="ranking-table-wrap">
-            <div className="ranking-note"><b>{rankingMode === "doubles" ? "双打" : "单打"} 实力榜 · Elo</b><span>按最近 {eloWindow} 场已登记赛果计算</span><div className="elo-window-toggle" role="group" aria-label="选择 Elo 样本范围"><button className={eloWindow === 20 ? "active" : ""} onClick={() => setEloWindow(20)}>近期 20 场</button><button className={eloWindow === 50 ? "active" : ""} onClick={() => setEloWindow(50)}>近期 50 场</button></div></div>
+            <div className="ranking-note"><b>{rankingMode === "doubles" ? "双打" : "单打"}实力榜</b><span>按Elo计算。</span><div className="elo-window-toggle" role="group" aria-label="选择 Elo 样本范围"><button className={eloWindow === 20 ? "active" : ""} onClick={() => setEloWindow(20)}>近20场</button><button className={eloWindow === 50 ? "active" : ""} onClick={() => setEloWindow(50)}>近50场</button></div></div>
             <div className="ranking-table-head"><span>排名 / 球员</span><span>Elo</span><span>样本场次</span><span>变化</span></div>
             {(rankingMode === "doubles" ? doublesRanking : singlesRanking).map((player, index) => (
               <article className="ranking-row" key={player.name}>
