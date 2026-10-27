@@ -1,0 +1,1 @@
+import{a as e,r as t,t as n}from"./globals-fN8GPJVh.js";var r=e(),i=t();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(n,{initialSurface:`web`}));

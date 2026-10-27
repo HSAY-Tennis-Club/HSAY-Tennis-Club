@@ -1,0 +1,1 @@
+import{r as e,t}from"./globals-Dpf0nrR9.js";import{t as n}from"./hsay-club-Bpp2ZlXO.js";var r=e(),i=t();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(n,{initialSurface:`web`}));
